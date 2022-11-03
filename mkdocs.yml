@@ -1,3 +1,32 @@
 site_name: Sommelier DB & Drive Docs
+repo_url: https://github.com/Sommelier-db/Sommelier-docs/
+edit_uri: edit/main/docs/
 theme:
   name: material
+  favicon: assets/figs/favicon.png
+  logo: assets/figs/favicon.png
+  language: en
+  features:
+    - navigation.tracking
+    - navigation.tabs
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      primary: red
+      accent: red
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+nav:
+  - Home: "index.md"
+  - Sommelier DB:
+    - Introduction: "db/intro.md"
+  - Sommelier Drive:
+    - Introduction: "drive/intro.md"
+  - Developer's Blog:
+    - Public key searchable encryption: "blog/pkse.md"
