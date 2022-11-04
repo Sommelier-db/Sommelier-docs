@@ -3,8 +3,8 @@ repo_url: https://github.com/Sommelier-db/Sommelier-docs/
 edit_uri: edit/main/docs/
 theme:
   name: material
-  favicon: assets/figs/favicon.png
-  logo: assets/figs/favicon.png
+  favicon: assets/figs/logo.png
+  logo: assets/figs/logo.png
   language: en
   features:
     - navigation.tracking
@@ -62,7 +62,6 @@ extra:
   search:
     language: "en"
 extra_javascript:
-  - javascripts/config.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 plugins:
