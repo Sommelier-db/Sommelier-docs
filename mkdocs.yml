@@ -25,7 +25,10 @@ theme:
 nav:
   - Home: "index.md"
   - Sommelier DB:
-    - Introduction: "db/intro.md"
+    - Introduction: "db/intro.md",
+    - Get Started: "db/get_started.md",
+    - How it works: "db/how_it_works.md",
+    - APIs: "db/apis.md"
   - Sommelier Drive:
     - Introduction: "drive/intro.md"
   - Developer's Blog:
