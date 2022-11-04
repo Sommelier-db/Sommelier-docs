@@ -15,3 +15,6 @@ For more detail about Sommelier DB, see [here](./db/intro.md).
 
 Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, **other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located**. Furthermore, the legitimate users can generate trapdoors using the user's secret key, allowing the server to search for the appropriate file without revealing the search criteria.
 Its detailed specifications are available [here](./drive/intro.md).
+
+## Disclaimer
+**DO NOT USE THIS LIBRARY IN PRODUCTION**. At this point, this is under development. It has known and unknown bugs and security flaws.
