@@ -30,7 +30,7 @@ Sommelier DB is a fork of SQLite: it adds the following two functions:
 
 
 1. A new SQL function for the test algorithm of the PKSE scheme.
-2. C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.
+2. C and Rust functions to generate a keyword encryption and a trapdoor of the PKSE scheme.
 
 
 These functions allow you to enjoy the benefits of PKSE without understanding how it works!
