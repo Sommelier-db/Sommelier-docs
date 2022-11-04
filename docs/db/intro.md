@@ -1,4 +1,4 @@
-## Today's database lacks security.
+## Today's databases lack security.
 Databases (DBs) play a significant role in today's Internet-based services. 
 For example, online search services manage the data to be searched in a DB, which can be searched efficiently according to the user's query.
 The more data stored in a DB, however, the more serious the damage of data leakage if that DB is attacked.
@@ -15,15 +15,24 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
 
 In more detail, a user who wishes to search for data first generates a pair of secret and public keys. The public key is made available to a data provider who provides some data. The data provider encrypts the data with the user's public key and stores only the encryption on the DB server. The user then generates data corresponding to the user's search criteria, called **trapdoor**, and sends it to the DB server; the DB server can learn little information from the trapdoor. Since the DB server only receives the encryption and the trapdoor, it can protect the data confidentiality from an adversary who have access to all data in the DB, as well as from a malicious administrator of that server. 
 
+<img src="../assets/figs/sommelier_db_intro_pkse1.png" width="50%" style="display: block; margin: auto;">
+
+
 Furthermore, the server can retrieve the encryption of the queried data using a test algorithm of the PKSE scheme. Formally, that algorithm **takes as input encrypted data and a trapdoor and outputs 1 if the data satisfies the search criteria for the provided trapdoor and 0 otherwise**. The server applies it to all candidate encryptions with the provided trapdoor and returns to the user only those encryptions for which it returns 1. In this way, the user can have the DB server search for apposite data as before.
+
+<img src="../assets/figs/sommelier_db_intro_pkse2.png" width="50%" style="display: block; margin: auto;">
 
 
 ## Sommelier DB: the world's first open source database based on public-key searchable encryption.
 Following the approach described above, we propose a new PKSE-based DB library, Sommelier DB. While the PKSE-based DB has been considered in various studies [2-5], as far as our knowledge there are no open source implementations other than ours.
 
 Sommelier DB is a fork of SQLite: it adds the following two functions:
+
+
 1. A new SQL function for the test algorithm of the PKSE scheme.
 2. C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.
+
+
 These functions allow you to enjoy the benefits of PKSE without understanding how it works!
 
 ## Reference

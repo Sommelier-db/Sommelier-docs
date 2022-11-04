@@ -590,14 +590,17 @@
 
 
 <h1 id="sommelier-db">Sommelier DB</h1>
-<p><strong>Open source DB with public-key searchable encryption: discerning encrypted data without knowing the contents, just like a sommelier!</strong></p>
+<p><strong>Open source DB with public-key searchable encryption: discerning encrypted data without knowing the contents, just like a sommelier!</strong>
+<img src="./assets/figs/logo.png" width="50%" style="display: block; margin: auto;"></p>
 <h2 id="overview-of-sommelier-db-and-drive">Overview of Sommelier DB and Drive</h2>
-<p>Sommelier DB is an open source DB library based on SQLite. In addition to existing SQLite features, it provides functions for public-key searchable encryption (PKSE) as below.
-1. A new SQL function to test a keyword encryption of the PKSE scheme.
-2. C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.
-The above functions allow users to have the database (DB) server search for appropriate records in the DB without revealing their search criteria.
+<p>Sommelier DB is an open source DB library combining SQLite and public-key searchable encryption (PKSE). In addition to existing SQLite features, it provides functions for PKSE as below.</p>
+<ol>
+<li>A new SQL function to test a keyword encryption of the PKSE scheme.</li>
+<li>C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
+</ol>
+<p>The above functions allow users to have the database (DB) server search for appropriate records in the DB without revealing their search criteria.
 For more detail about Sommelier DB, see <a href="db/intro/">here</a>.</p>
-<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Stored files and their file paths are encrypted with the public key of the authorized user who has read access to the file. Therefore, other users who do not have read access or the administrator of the server hosting the file system cannot know what files exist and where they are located. Furthermore, legitimate users can generate trapdoors using the user's private key, allowing the server to search for the appropriate file without revealing the search criteria.
+<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located. Furthermore, the legitimate users can generate trapdoors using the user's private key, allowing the server to search for the appropriate file without revealing the search criteria.
 Its detailed specifications are available <a href="drive/intro/">here</a>.</p>
 
 
