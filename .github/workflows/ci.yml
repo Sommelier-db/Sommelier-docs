@@ -15,4 +15,5 @@ jobs:
       - run: pip install --upgrade pip
       - run: pip install mkdocs-material
       - run: pip install mkdocs-include-markdown-plugin
+      - run: pip install plantuml-markdown
       - run: mkdocs gh-deploy --force
