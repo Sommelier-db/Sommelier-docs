@@ -18,3 +18,10 @@ Its detailed specifications are available [here](./drive/intro.md).
 
 ## Disclaimer
 **DO NOT USE THIS LIBRARY IN PRODUCTION**. At this point, this is under development. It has known and unknown bugs and security flaws.
+
+## Quick Links
+- [Sommelier DB implementation](https://github.com/Sommelier-db/sommelier-db)
+- [Server implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-db-server)
+- [Client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-client)
+- [Glibc client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-glibc/tree/drive)
+- [PKSE implementation written in Rust](https://github.com/Sommelier-db/rust-searchable-pke)
