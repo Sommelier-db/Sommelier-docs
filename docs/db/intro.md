@@ -1,14 +1,14 @@
 ## Today's databases lack security.
 Databases (DBs) play a significant role in today's Internet-based services. 
-For example, online search services manage the data to be searched in a DB, which can be searched efficiently according to the user's query.
-The more data stored in a DB, however, the more serious the damage of data leakage if that DB is attacked.
-Notably, this is not a theoretical concern, but a real issue. It is estimated that well-known Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
+For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's query.
+However, the more data stored in a DB, the more serious the damage of data leakage if that DB is attacked.
+Notably, this is not a theoretical concern, but a real issue. In fact, it is estimated that popular Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
 From these cases, we believe that we need a solution that can protect the data confidentiality **even if data is leaked from the DB**.
 
 
 ## How public-key searchable encryption establishes both the convenience and security of databases.
 A primitive solution to the above problem is to encrypt all data in the DB so that its contents cannot be known by an adversary who attacks the DB.
-However, it would compromise the convenience of the DB because the server hosting the DB cannot search the queried data.
+However, it would compromise the convenience of the DB because the server hosting the DB cannot search for the queried data.
 
 We establish both the convenience and security by encrypting the data by **public-key searchable encryption (PKSE)**.
 PKSE has the same features as standard public-key encryption schemes, e.g., RSA encryption scheme, except that **the secret key holder can allow a third party to test whether the encrypted data satisfies some search criteria, without revealing the data and the search criteria** [2].
