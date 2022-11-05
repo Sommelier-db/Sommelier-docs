@@ -40,6 +40,18 @@
     <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-XCVVGGTC1G"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-XCVVGGTC1G",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-XCVVGGTC1G",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
 
     
     
@@ -631,13 +643,13 @@
 
 <h2 id="todays-databases-lack-security">Today's databases lack security.</h2>
 <p>Databases (DBs) play a significant role in today's Internet-based services. 
-For example, online search services manage the data to be searched in a DB, which can be searched efficiently according to the user's query.
-The more data stored in a DB, however, the more serious the damage of data leakage if that DB is attacked.
-Notably, this is not a theoretical concern, but a real issue. It is estimated that well-known Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
+For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's query.
+However, the more data stored in a DB, the more serious the damage of data leakage if that DB is attacked.
+Notably, this is not a theoretical concern, but a real issue. In fact, it is estimated that popular Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
 From these cases, we believe that we need a solution that can protect the data confidentiality <strong>even if data is leaked from the DB</strong>.</p>
 <h2 id="how-public-key-searchable-encryption-establishes-both-the-convenience-and-security-of-databases">How public-key searchable encryption establishes both the convenience and security of databases.</h2>
 <p>A primitive solution to the above problem is to encrypt all data in the DB so that its contents cannot be known by an adversary who attacks the DB.
-However, it would compromise the convenience of the DB because the server hosting the DB cannot search the queried data.</p>
+However, it would compromise the convenience of the DB because the server hosting the DB cannot search for the queried data.</p>
 <p>We establish both the convenience and security by encrypting the data by <strong>public-key searchable encryption (PKSE)</strong>.
 PKSE has the same features as standard public-key encryption schemes, e.g., RSA encryption scheme, except that <strong>the secret key holder can allow a third party to test whether the encrypted data satisfies some search criteria, without revealing the data and the search criteria</strong> [2].</p>
 <p>In more detail, a user who wishes to search for data first generates a pair of secret and public keys. The public key is made available to a data provider who provides some data. The data provider encrypts the data with the user's public key and stores only the encryption on the DB server. The user then generates data corresponding to the user's search criteria, called <strong>trapdoor</strong>, and sends it to the DB server; the DB server can learn little information from the trapdoor. Since the DB server only receives the encryption and the trapdoor, it can protect the data confidentiality from an adversary who have access to all data in the DB, as well as from a malicious administrator of that server. </p>
@@ -649,7 +661,7 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
 <p>Sommelier DB is a fork of SQLite: it adds the following two functions:</p>
 <ol>
 <li>A new SQL function for the test algorithm of the PKSE scheme.</li>
-<li>C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
+<li>C and Rust functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
 </ol>
 <p>These functions allow you to enjoy the benefits of PKSE without understanding how it works!</p>
 <h2 id="reference">Reference</h2>
@@ -661,6 +673,8 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
 <li>Prasanna, B. T., &amp; Akki, C. B. (2015). A comparative study of homomorphic and searchable encryption schemes for cloud computing. arXiv preprint arXiv:1505.03263.</li>
 </ol>
 
+
+  
 
 
 

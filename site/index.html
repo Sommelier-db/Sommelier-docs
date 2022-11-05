@@ -40,6 +40,18 @@
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-XCVVGGTC1G"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-XCVVGGTC1G",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-XCVVGGTC1G",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
 
     
     
@@ -342,6 +354,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    Disclaimer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-links" class="md-nav__link">
+    Quick Links
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -569,6 +595,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#disclaimer" class="md-nav__link">
+    Disclaimer
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-links" class="md-nav__link">
+    Quick Links
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -593,16 +633,28 @@
 <p><strong>Open source DB with public-key searchable encryption: discerning encrypted data without knowing the contents, just like a sommelier!</strong>
 <img src="./assets/figs/logo.png" width="50%" style="display: block; margin: auto;"></p>
 <h2 id="overview-of-sommelier-db-and-drive">Overview of Sommelier DB and Drive</h2>
-<p>Sommelier DB is an open source DB library combining SQLite and public-key searchable encryption (PKSE). In addition to existing SQLite features, it provides functions for PKSE as below.</p>
+<p>Sommelier DB is <strong>an open source DB library combining SQLite and public-key searchable encryption (PKSE)</strong>. In addition to existing SQLite features, it provides functions for PKSE as below.</p>
 <ol>
 <li>A new SQL function to test a keyword encryption of the PKSE scheme.</li>
-<li>C functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
+<li>C and Rust functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
 </ol>
-<p>The above functions allow users to have the database (DB) server search for appropriate records in the DB without revealing their search criteria.
+<p>The above functions allow users to have the database (DB) server search for appropriate records in the DB <strong>without revealing their search criteria</strong>.
 For more detail about Sommelier DB, see <a href="db/intro/">here</a>.</p>
-<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located. Furthermore, the legitimate users can generate trapdoors using the user's private key, allowing the server to search for the appropriate file without revealing the search criteria.
+<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, <strong>other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located</strong>. Furthermore, the legitimate users can generate trapdoors using the user's secret key, allowing the server to search for the appropriate file without revealing the search criteria.
 Its detailed specifications are available <a href="drive/intro/">here</a>.</p>
+<h2 id="disclaimer">Disclaimer</h2>
+<p><strong>DO NOT USE THIS LIBRARY IN PRODUCTION</strong>. At this point, this is under development. It has known and unknown bugs and security flaws.</p>
+<h2 id="quick-links">Quick Links</h2>
+<ul>
+<li><a href="https://github.com/Sommelier-db/sommelier-db">Sommelier DB implementation</a></li>
+<li><a href="https://github.com/Sommelier-db/sommelier-db-server">Server implementation of Sommelier Drive</a></li>
+<li><a href="https://github.com/Sommelier-db/sommelier-drive-client">Client implementation of Sommelier Drive</a></li>
+<li><a href="https://github.com/Sommelier-db/sommelier-drive-glibc/tree/drive">Glibc client implementation of Sommelier Drive</a></li>
+<li><a href="https://github.com/Sommelier-db/rust-searchable-pke">PKSE implementation written in Rust</a></li>
+</ul>
 
+
+  
 
 
 
