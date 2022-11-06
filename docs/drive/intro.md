@@ -4,7 +4,7 @@ As the first application of Sommelier DB, we developed a new remote file system,
 In a nutshell, a data provider who creates a new file, a user who has read permission to that file, and the remote server work as below.
 
 1. The data provider encrypts the file contents and paths with the user's public key and stores their encryptions on the remote server.
-2. The user generates a trapdoor of the PKSE scheme with the user's private key and provides it to the remote server.
+2. The user generates a trapdoor of the PKSE scheme with the user's private key and provides it for the remote server.
 3. The remote server returns the file contents encryption of which the corresponding file path encryption matches with the provided trapdoor.
 4. The user decrypts the returned encryption with the user's private key, which results in the file contents.
 

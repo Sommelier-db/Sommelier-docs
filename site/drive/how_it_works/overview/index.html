@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -507,9 +512,45 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Overview
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Overview
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-nav__link">
+    Permission hash for the optimization of file path testing on the remote server.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-key-for-the-optimization-of-encrypting-a-file-for-multiple-users" class="md-nav__link">
+    Shared key for the optimization of encrypting a file for multiple users.
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -684,6 +725,28 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-nav__link">
+    Permission hash for the optimization of file path testing on the remote server.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#shared-key-for-the-optimization-of-encrypting-a-file-for-multiple-users" class="md-nav__link">
+    Shared key for the optimization of encrypting a file for multiple users.
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -704,7 +767,12 @@
 
   <h1>Overview</h1>
 
-
+<p>Here, we describe new concepts of Sommelier Drive and how they optimize the processes of the data provider and the remote server.</p>
+<h2 id="permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server">Permission hash for the optimization of file path testing on the remote server.</h2>
+<p>First, we introduce a permission hash. This is a hash value calculated from the ID of a user with legitimate read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When querying a file, the user also provides the remote server with the permission hash corresponding to the queried file path, allowing the remote server to narrow down the candidates for file path encryptions to test. In this way, the permission hash optimizes the file path testing on the remote server.</p>
+<p>The attentive reader may think that the permission hash helps the malicious server administrator learn information about the file path. In fact, <strong>it reveals only information about sibling files and directories, i.e., those contained in the same parent directory</strong>. This is because the administrator cannot learn the actual file paths from their permission hash or encryptions but can specify the siblings by comparing the permission hashes.</p>
+<h2 id="shared-key-for-the-optimization-of-encrypting-a-file-for-multiple-users">Shared key for the optimization of encrypting a file for multiple users.</h2>
+<p>A shared key is just a secret key of symmetric key encryption (SKE), e.g., AES. It improves the efficiency when multiple users have read permission for the same file. </p>
 
 
   
