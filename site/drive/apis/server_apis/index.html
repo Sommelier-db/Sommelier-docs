@@ -8,21 +8,21 @@
       
       
       
-        <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/db/intro/">
+        <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/drive/apis/server_apis/">
       
-      <link rel="icon" href="../../assets/figs/logo.png">
+      <link rel="icon" href="../../../assets/figs/logo.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
     
     
       
-        <title>Introduction - Sommelier DB & Drive Docs</title>
+        <title>Server REST APIs - Sommelier DB & Drive Docs</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
         
       
       
@@ -39,7 +39,7 @@
       
     
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
   
@@ -79,11 +79,6 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
-        
-        <a href="#todays-databases-lack-security" class="md-skip">
-          Skip to content
-        </a>
-      
     </div>
     <div data-md-component="announce">
       
@@ -94,9 +89,9 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Sommelier DB &amp; Drive Docs" class="md-header__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
+    <a href="../../.." title="Sommelier DB &amp; Drive Docs" class="md-header__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
       
-  <img src="../../assets/figs/logo.png" alt="logo">
+  <img src="../../../assets/figs/logo.png" alt="logo">
 
     </a>
     <label class="md-header__button md-icon" for="__drawer">
@@ -112,7 +107,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Introduction
+              Server REST APIs
             
           </span>
         </div>
@@ -209,10 +204,26 @@
 
 
   <li class="md-tabs__item">
-    <a href="../.." class="md-tabs__link">
+    <a href="../../.." class="md-tabs__link">
       Home
     </a>
   </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../db/intro/" class="md-tabs__link">
+        Sommelier DB
+      </a>
+    </li>
+  
 
       
         
@@ -226,23 +237,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="./" class="md-tabs__link md-tabs__link--active">
-        Sommelier DB
-      </a>
-    </li>
-  
-
-      
-        
-  
-  
-
-
-  
-  
-  
-    <li class="md-tabs__item">
-      <a href="../../drive/intro/" class="md-tabs__link">
+      <a href="../../intro/" class="md-tabs__link md-tabs__link--active">
         Sommelier Drive
       </a>
     </li>
@@ -258,7 +253,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="../../blog/pkse/" class="md-tabs__link">
+      <a href="../../../blog/pkse/" class="md-tabs__link">
         Developer's Blog
       </a>
     </li>
@@ -286,9 +281,9 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Sommelier DB &amp; Drive Docs" class="md-nav__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
+    <a href="../../.." title="Sommelier DB &amp; Drive Docs" class="md-nav__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
       
-  <img src="../../assets/figs/logo.png" alt="logo">
+  <img src="../../../assets/figs/logo.png" alt="logo">
 
     </a>
     Sommelier DB & Drive Docs
@@ -316,7 +311,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../.." class="md-nav__link">
         Home
       </a>
     </li>
@@ -329,14 +324,12 @@
 
   
   
-    
-  
   
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
       
       
       
@@ -357,69 +350,11 @@
               
   
   
-    
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-      
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          Introduction
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../../../db/intro/" class="md-nav__link">
         Introduction
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#todays-databases-lack-security" class="md-nav__link">
-    Today's databases lack security.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-public-key-searchable-encryption-establishes-both-the-convenience-and-security-of-databases" class="md-nav__link">
-    How public-key searchable encryption establishes both the convenience and security of databases.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sommelier-db-the-worlds-first-open-source-database-based-on-public-key-searchable-encryption" class="md-nav__link">
-    Sommelier DB: the world's first open source database based on public-key searchable encryption.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -431,7 +366,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../get_started/" class="md-nav__link">
+      <a href="../../../db/get_started/" class="md-nav__link">
         Get Started
       </a>
     </li>
@@ -445,7 +380,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../how_it_works/" class="md-nav__link">
+      <a href="../../../db/how_it_works/" class="md-nav__link">
         How it works
       </a>
     </li>
@@ -459,7 +394,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../apis/" class="md-nav__link">
+      <a href="../../../db/apis/" class="md-nav__link">
         APIs
       </a>
     </li>
@@ -479,12 +414,14 @@
 
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
       
       
       
@@ -507,7 +444,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/intro/" class="md-nav__link">
+      <a href="../../intro/" class="md-nav__link">
         Introduction
       </a>
     </li>
@@ -521,7 +458,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/get_started/" class="md-nav__link">
+      <a href="../../get_started/" class="md-nav__link">
         Get Started
       </a>
     </li>
@@ -561,7 +498,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/how_it_works/overview/" class="md-nav__link">
+      <a href="../../how_it_works/overview/" class="md-nav__link">
         Overview
       </a>
     </li>
@@ -575,7 +512,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/how_it_works/server_spec/" class="md-nav__link">
+      <a href="../../how_it_works/server_spec/" class="md-nav__link">
         Server Specification
       </a>
     </li>
@@ -589,7 +526,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/how_it_works/client_spec/" class="md-nav__link">
+      <a href="../../how_it_works/client_spec/" class="md-nav__link">
         Client Specification
       </a>
     </li>
@@ -608,12 +545,14 @@
               
   
   
+    
+  
   
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" checked>
       
       
       
@@ -634,11 +573,19 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../../drive/apis/server_apis/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         Server REST APIs
       </a>
+      
     </li>
   
 
@@ -650,7 +597,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../drive/apis/client_apis/" class="md-nav__link">
+      <a href="../client_apis/" class="md-nav__link">
         Client APIs
       </a>
     </li>
@@ -705,7 +652,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../blog/pkse/" class="md-nav__link">
+      <a href="../../../blog/pkse/" class="md-nav__link">
         Public key searchable encryption
       </a>
     </li>
@@ -737,42 +684,6 @@
   
   
   
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#todays-databases-lack-security" class="md-nav__link">
-    Today's databases lack security.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#how-public-key-searchable-encryption-establishes-both-the-convenience-and-security-of-databases" class="md-nav__link">
-    How public-key searchable encryption establishes both the convenience and security of databases.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#sommelier-db-the-worlds-first-open-source-database-based-on-public-key-searchable-encryption" class="md-nav__link">
-    Sommelier DB: the world's first open source database based on public-key searchable encryption.
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
-  </a>
-  
-</li>
-      
-    </ul>
-  
 </nav>
                   </div>
                 </div>
@@ -785,45 +696,15 @@
                 
                   
 
-  <a href="https://github.com/Sommelier-db/Sommelier-docs/edit/main/docs/db/intro.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/Sommelier-db/Sommelier-docs/edit/main/docs/drive/apis/server_apis.md" title="Edit this page" class="md-content__button md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
-  <h1>Introduction</h1>
+  <h1>Server REST APIs</h1>
 
-<h2 id="todays-databases-lack-security">Today's databases lack security.</h2>
-<p>Databases (DBs) play a significant role in today's Internet-based services. 
-For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's query.
-However, the more data stored in a DB, the more serious the damage of data leakage if that DB is attacked.
-Notably, this is not a theoretical concern, but a real issue. In fact, it is estimated that popular Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
-From these cases, we believe that we need a solution that can protect the data confidentiality <strong>even if data is leaked from the DB</strong>.</p>
-<h2 id="how-public-key-searchable-encryption-establishes-both-the-convenience-and-security-of-databases">How public-key searchable encryption establishes both the convenience and security of databases.</h2>
-<p>A primitive solution to the above problem is to encrypt all data in the DB so that its contents cannot be known by an adversary who attacks the DB.
-However, it would compromise the convenience of the DB because the server hosting the DB cannot search for the queried data.</p>
-<p>We establish both the convenience and security by encrypting the data by <strong>public-key searchable encryption (PKSE)</strong>.
-PKSE has the same features as standard public-key encryption schemes, e.g., RSA encryption scheme, except that <strong>the private key holder can allow a third party to test whether the encrypted data satisfies some search criteria, without revealing the data and the search criteria</strong> [2].</p>
-<p>In more detail, a user who wishes to search for data first generates a pair of secret and public keys. The public key is made available to a data provider who provides some data. The data provider encrypts the data with the user's public key and stores only the encryption on the DB server. The user then generates data corresponding to the user's search criteria, called <strong>trapdoor</strong>, and sends it to the DB server; the DB server can learn little information from the trapdoor. Since the DB server only receives the encryption and the trapdoor, it can protect the data confidentiality from an adversary who have access to all data in the DB, as well as from a malicious administrator of that server. </p>
-<p><img src="../../assets/figs/sommelier_db_intro_pkse1.png" width="50%" style="display: block; margin: auto;"></p>
-<p>Furthermore, the server can retrieve the encryption of the queried data using a test algorithm of the PKSE scheme. Formally, that algorithm <strong>takes as input encrypted data and a trapdoor and outputs 1 if the data satisfies the search criteria for the provided trapdoor and 0 otherwise</strong>. The server applies it to all candidate encryptions with the provided trapdoor and returns to the user only those encryptions for which it returns 1. In this way, the user can have the DB server search for apposite data as before.</p>
-<p><img src="../../assets/figs/sommelier_db_intro_pkse2.png" width="50%" style="display: block; margin: auto;"></p>
-<h2 id="sommelier-db-the-worlds-first-open-source-database-based-on-public-key-searchable-encryption">Sommelier DB: the world's first open source database based on public-key searchable encryption.</h2>
-<p>Following the approach described above, we propose a new PKSE-based DB library, Sommelier DB. While the PKSE-based DB has been considered in various studies [2-5], as far as our knowledge there are no open source implementations other than ours.</p>
-<p>Sommelier DB is a fork of SQLite: it adds the following two functions:</p>
-<ol>
-<li>A new SQL function for the test algorithm of the PKSE scheme.</li>
-<li>C and Rust functions to generate a keyword encryption and a trapdoor of the PKSE scheme.</li>
-</ol>
-<p>These functions allow you to enjoy the benefits of PKSE without understanding how it works!</p>
-<h2 id="reference">Reference</h2>
-<ol>
-<li>Todd, D. (2022, September). Top 10 Data Breaches of All Time, SecureWorld. https://www.secureworld.io/industry-news/top-10-data-breaches-of-all-time, (Accessed on 10/27/2022).</li>
-<li>Boneh, D., Crescenzo, G. D., Ostrovsky, R., &amp; Persiano, G. (2004, May). Public key encryption with keyword search. In International conference on the theory and applications of cryptographic techniques (pp. 506-522). Springer, Berlin, Heidelberg.</li>
-<li>Matsuda, N., Hirano, T., Kawai, Y., Ito, T., Hattori, M., Yamanaka, T., &amp; Nishigaki, M. (2020). Public-key Searchable Encryption with Index Generation for Shared Database. Journal of Information Processing, 28, 520-536.</li>
-<li>Wang, Z., Chen, B., Xiang, T., Zhou, L., Yan, H., &amp; Li, J. (2021, November). Public Key Based Searchable Encryption with Fine-Grained Sender Permission Control. In International Conference on Provable Security (pp. 3-18). Springer, Cham.</li>
-<li>Prasanna, B. T., &amp; Akki, C. B. (2015). A comparative study of homomorphic and searchable encryption schemes for cloud computing. arXiv preprint arXiv:1505.03263.</li>
-</ol>
+
 
 
   
@@ -846,7 +727,7 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../.." class="md-footer__link md-footer__link--prev" aria-label="Previous: Home" rel="prev">
+        <a href="../../how_it_works/client_spec/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Client Specification" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -855,20 +736,20 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
               <span class="md-footer__direction">
                 Previous
               </span>
-              Home
+              Client Specification
             </div>
           </div>
         </a>
       
       
         
-        <a href="../get_started/" class="md-footer__link md-footer__link--next" aria-label="Next: Get Started" rel="next">
+        <a href="../client_apis/" class="md-footer__link md-footer__link--next" aria-label="Next: Client APIs" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Get Started
+              Client APIs
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -899,10 +780,10 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
       <div class="md-dialog__inner md-typeset"></div>
     </div>
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.8492ddcf.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

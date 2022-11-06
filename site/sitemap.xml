@@ -31,12 +31,37 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/</loc>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/get_started/</loc>
          <lastmod>2022-11-06</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://sommelier-db.github.io/Sommelier-docs/drive/intro/</loc>
+         <lastmod>2022-11-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/apis/client_apis/</loc>
+         <lastmod>2022-11-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/apis/server_apis/</loc>
+         <lastmod>2022-11-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/client_spec/</loc>
+         <lastmod>2022-11-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/overview/</loc>
+         <lastmod>2022-11-06</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/server_spec/</loc>
          <lastmod>2022-11-06</lastmod>
          <changefreq>daily</changefreq>
     </url>

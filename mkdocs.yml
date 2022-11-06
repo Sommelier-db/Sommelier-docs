@@ -32,6 +32,14 @@ nav:
     - APIs: "db/apis.md"
   - Sommelier Drive:
     - Introduction: "drive/intro.md"
+    - Get Started: "drive/get_started.md"
+    - How it works:
+      - Overview: "drive/how_it_works/overview.md"
+      - Server Specification: "drive/how_it_works/server_spec.md"
+      - Client Specification: "drive/how_it_works/client_spec.md"
+    - APIs:
+      - Server REST APIs: "drive/apis/server_apis.md"
+      - Client APIs: "drive/apis/client_apis.md"
   - Developer's Blog:
     - Public key searchable encryption: "blog/pkse.md"
 markdown_extensions:
