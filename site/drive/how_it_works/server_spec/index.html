@@ -797,42 +797,87 @@
 
 <p>A remote server in Sommelier Drive stores file information in Sommelier DB. That is, it creates DB tables as below.</p>
 <h2 id="user-table">User Table</h2>
-<p><strong>User table</strong> stores the id of a user and the user's PKE and PKSE public keys. They are denoted by <code>userId</code>, <code>dataPK</code>, and <code>keywordPK</code>, respectively, in the following description. 
-| UserID | DataPK | KeywordPK |
-| ------ | ------ | --------- |
-| Int    | Text   | Text      |</p>
+<p><strong>User table</strong> stores the id of a user and the user's PKE and PKSE public keys. They are denoted by <code>userId</code>, <code>dataPK</code>, and <code>keywordPK</code>, respectively, in the following description. </p>
+<table>
+<thead>
+<tr>
+<th align="center">UserID</th>
+<th align="center">DataPK</th>
+<th align="center">KeywordPK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Int</td>
+<td align="center">Text</td>
+<td align="center">Text</td>
+</tr>
+</tbody>
+</table>
 <h2 id="path-table">Path Table</h2>
-<p><strong>Path table</strong> stores information about the file path. Each record in this table corresponds to a pair of the <code>userId</code> and the file path, <code>filePath</code>. Its columns describe the property of the file or directory located in the <code>filePath</code> as below.
-| PathID | UserID | PermissionHash | DataCT | KeywordCT |
-| ------ | ------ | -------------- | ------ | --------- |
-| Int    | Int    | Text           | Text   | Text      |
-* UserID: A <code>userId</code> of the user who has read permission to the file or directory located in the <code>filePath</code>.
-* PermissionHash: A <code>permissionHash</code> derived from the <code>userId</code> and <code>Parent(filePath)</code>, which represents a parent directory path of the <code>filePath</code>.<br />
-* DataCT: A ciphertext of the <code>filePath</code> encrypted with the <code>dataPK</code> corresponding to the <code>userId</code>.
-* KeywordCT: A ciphertext of the <code>filePath</code> encrypted with the <code>keywordPK</code> corresponding to the <code>userId</code>.</p>
+<p><strong>Path table</strong> stores information about the file path. Each record in this table corresponds to a pair of the <code>userId</code> and the file path, <code>filePath</code>. Its columns describe the property of the file or directory located in the <code>filePath</code> as below.</p>
+<table>
+<thead>
+<tr>
+<th align="center">PathID</th>
+<th align="center">UserID</th>
+<th align="center">PermissionHash</th>
+<th align="center">DataCT</th>
+<th align="center">KeywordCT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Int</td>
+<td align="center">Int</td>
+<td align="center">Text</td>
+<td align="center">Text</td>
+<td align="center">Text</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>UserID: A <code>userId</code> of the user who has read permission to the file or directory located in the <code>filePath</code>.</li>
+<li>PermissionHash: A <code>permissionHash</code> derived from the <code>userId</code> and <code>Parent(filePath)</code>, which represents a parent directory path of the <code>filePath</code>.  </li>
+<li>DataCT: A ciphertext of the <code>filePath</code> encrypted with the <code>dataPK</code> corresponding to the <code>userId</code>.</li>
+<li>KeywordCT: A ciphertext of the <code>filePath</code> encrypted with the <code>keywordPK</code> corresponding to the <code>userId</code>.</li>
+</ul>
 <h2 id="shared-key-table">Shared Key Table</h2>
 <p><strong>Shared Key table</strong> stores a <code>pathId</code> and a shared key encryption, <code>sharedKeyCT</code>. The <code>sharedKeyCT</code> is required to recover the file contents located in the <code>filePath</code> of the <code>pathId</code>.</p>
 <table>
 <thead>
 <tr>
-<th>SharedKeyID</th>
-<th>PathID</th>
-<th>SharedKeyCT</th>
+<th align="center">SharedKeyID</th>
+<th align="center">PathID</th>
+<th align="center">SharedKeyCT</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Int</td>
-<td>Int</td>
-<td>Text</td>
+<td align="center">Int</td>
+<td align="center">Int</td>
+<td align="center">Text</td>
 </tr>
 </tbody>
 </table>
 <h2 id="contents-table">Contents Table</h2>
-<p><strong>Contents table</strong> stores a file contents encryption, <code>contentsCT</code>. Each record corresponds to a <code>sharedKeyHash</code>, which is a hash value of the shared key. Therefore, users who hold the same shared key can access the same record.
-| ContentsID | SharedKeyHash | ContentsCT |
-| ---------- | ------------- | ---------- |
-| Int        | Text          | Text       |</p>
+<p><strong>Contents table</strong> stores a file contents encryption, <code>contentsCT</code>. Each record corresponds to a <code>sharedKeyHash</code>, which is a hash value of the shared key. Therefore, users who hold the same shared key can access the same record.</p>
+<table>
+<thead>
+<tr>
+<th align="center">ContentsID</th>
+<th align="center">SharedKeyHash</th>
+<th align="center">ContentsCT</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Int</td>
+<td align="center">Text</td>
+<td align="center">Text</td>
+</tr>
+</tbody>
+</table>
 
 
   
