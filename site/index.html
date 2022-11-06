@@ -15,7 +15,7 @@
     
     
       
-        <title>Sommelier DB & Drive Docs</title>
+        <title>Sommelier DB Docs</title>
       
     
     
@@ -94,7 +94,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="." title="Sommelier DB &amp; Drive Docs" class="md-header__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
+    <a href="." title="Sommelier DB Docs" class="md-header__button md-logo" aria-label="Sommelier DB Docs" data-md-component="logo">
       
   <img src="assets/figs/logo.png" alt="logo">
 
@@ -106,7 +106,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Sommelier DB & Drive Docs
+            Sommelier DB Docs
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -286,12 +286,12 @@
 
 <nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="." title="Sommelier DB &amp; Drive Docs" class="md-nav__button md-logo" aria-label="Sommelier DB & Drive Docs" data-md-component="logo">
+    <a href="." title="Sommelier DB Docs" class="md-nav__button md-logo" aria-label="Sommelier DB Docs" data-md-component="logo">
       
   <img src="assets/figs/logo.png" alt="logo">
 
     </a>
-    Sommelier DB & Drive Docs
+    Sommelier DB Docs
   </label>
   
     <div class="md-nav__source">
@@ -350,8 +350,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview-of-sommelier-db-and-drive" class="md-nav__link">
-    Overview of Sommelier DB and Drive
+  <a href="#overview-of-sommelier-db" class="md-nav__link">
+    Overview of Sommelier DB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview-of-sommelier-drive" class="md-nav__link">
+    Overview of Sommelier Drive
   </a>
   
 </li>
@@ -741,8 +748,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#overview-of-sommelier-db-and-drive" class="md-nav__link">
-    Overview of Sommelier DB and Drive
+  <a href="#overview-of-sommelier-db" class="md-nav__link">
+    Overview of Sommelier DB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#overview-of-sommelier-drive" class="md-nav__link">
+    Overview of Sommelier Drive
   </a>
   
 </li>
@@ -784,7 +798,7 @@
 <h1 id="sommelier-db">Sommelier DB</h1>
 <p><strong>Open source DB with public-key searchable encryption: discerning encrypted data without knowing the contents, just like a sommelier!</strong>
 <img src="./assets/figs/logo.png" width="50%" style="display: block; margin: auto;"></p>
-<h2 id="overview-of-sommelier-db-and-drive">Overview of Sommelier DB and Drive</h2>
+<h2 id="overview-of-sommelier-db">Overview of Sommelier DB</h2>
 <p>Sommelier DB is <strong>an open source DB library combining SQLite and public-key searchable encryption (PKSE)</strong>. In addition to existing SQLite features, it provides functions for PKSE as below.</p>
 <ol>
 <li>A new SQL function to test a keyword encryption of the PKSE scheme.</li>
@@ -792,7 +806,8 @@
 </ol>
 <p>The above functions allow users to have the database (DB) server search for appropriate records in the DB <strong>without revealing their search criteria</strong>.
 For more detail about Sommelier DB, see <a href="db/intro/">here</a>.</p>
-<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, <strong>other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located</strong>. Furthermore, the legitimate users can generate trapdoors using the user's secret key, allowing the server to search for the appropriate file without revealing the search criteria.
+<h2 id="overview-of-sommelier-drive">Overview of Sommelier Drive</h2>
+<p>Sommelier Drive is a remote file system developed as the first application of Sommelier DB. Its stored files and their file paths are encrypted with the public key of the legitimate user who has read permission to the file. Therefore, <strong>other users who do not have the read permission or the administrator of the server hosting the file system cannot know what files exist and where they are located</strong>. Furthermore, the legitimate users can generate trapdoors using the user's private key, allowing the server to search for the appropriate file without revealing the search criteria.
 Its detailed specifications are available <a href="drive/intro/">here</a>.</p>
 <h2 id="disclaimer">Disclaimer</h2>
 <p><strong>DO NOT USE THIS LIBRARY IN PRODUCTION</strong>. At this point, this is under development. It has known and unknown bugs and security flaws.</p>
