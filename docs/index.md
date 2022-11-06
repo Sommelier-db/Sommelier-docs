@@ -22,7 +22,7 @@ Its detailed specifications are available [here](./drive/intro.md).
 
 ## Quick Links
 - [Sommelier DB implementation](https://github.com/Sommelier-db/sommelier-db)
-- [Server implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-db-server)
+- [Server implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-server)
 - [Client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-client)
 - [Glibc client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-glibc/tree/drive)
 - [PKSE implementation written in Rust](https://github.com/Sommelier-db/rust-searchable-pke)

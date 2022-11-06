@@ -34,7 +34,7 @@ nav:
     - Introduction: "drive/intro.md"
     - Get Started: "drive/get_started.md"
     - How it works:
-      - Concepts: "drive/how_it_works/concepts.md"
+      - New Concepts: "drive/how_it_works/concepts.md"
       - Server Specification: "drive/how_it_works/server_spec.md"
       - Client Specification: "drive/how_it_works/client_spec.md"
     - APIs:
