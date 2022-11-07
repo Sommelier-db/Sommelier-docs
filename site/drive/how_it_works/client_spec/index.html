@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#user-registration" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -535,9 +540,80 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Client Specification
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Client Specification
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-registration" class="md-nav__link">
+    User registration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filedirectory-acquisition-touch" class="md-nav__link">
+    File/Directory acquisition (touch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#children-file-paths-acquisition-ls" class="md-nav__link">
+    Children file paths acquisition (ls)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descendant-file-paths-acquisition-find" class="md-nav__link">
+    Descendant file paths acquisition (find)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-creation-touch" class="md-nav__link">
+    File creation (touch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-creation-mkdir" class="md-nav__link">
+    Directory creation (mkdir)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modify-file" class="md-nav__link">
+    Modify file
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -684,6 +760,63 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#user-registration" class="md-nav__link">
+    User registration
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#filedirectory-acquisition-touch" class="md-nav__link">
+    File/Directory acquisition (touch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#children-file-paths-acquisition-ls" class="md-nav__link">
+    Children file paths acquisition (ls)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#descendant-file-paths-acquisition-find" class="md-nav__link">
+    Descendant file paths acquisition (find)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-creation-touch" class="md-nav__link">
+    File creation (touch)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#directory-creation-mkdir" class="md-nav__link">
+    Directory creation (mkdir)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modify-file" class="md-nav__link">
+    Modify file
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -704,7 +837,15 @@
 
   <h1>Client Specification</h1>
 
-
+<p>A client of Sommelier Drive can manage files on the remote server in a similar manner to Unix file systems. While our current implementation provides two types of client CLI, both of them perform each operation in the background as below.</p>
+<h2 id="user-registration">User registration</h2>
+<h2 id="filedirectory-acquisition-touch">File/Directory acquisition (touch)</h2>
+<h2 id="children-file-paths-acquisition-ls">Children file paths acquisition (ls)</h2>
+<h2 id="descendant-file-paths-acquisition-find">Descendant file paths acquisition (find)</h2>
+<h2 id="file-creation-touch">File creation (touch)</h2>
+<h2 id="directory-creation-mkdir">Directory creation (mkdir)</h2>
+<h2 id="modify-file">Modify file</h2>
+<p><strong>Note that the other operations, e.g., file deletion, are not supported in the current implementation</strong>.</p>
 
 
   

@@ -550,28 +550,28 @@
       
         <li class="md-nav__item">
   <a href="#user-table" class="md-nav__link">
-    User Table
+    User table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#path-table" class="md-nav__link">
-    Path Table
+    Path table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#shared-key-table" class="md-nav__link">
-    Shared Key Table
+    Shared key table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#contents-table" class="md-nav__link">
-    Contents Table
+    Contents table
   </a>
   
 </li>
@@ -747,28 +747,28 @@
       
         <li class="md-nav__item">
   <a href="#user-table" class="md-nav__link">
-    User Table
+    User table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#path-table" class="md-nav__link">
-    Path Table
+    Path table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#shared-key-table" class="md-nav__link">
-    Shared Key Table
+    Shared key table
   </a>
   
 </li>
       
         <li class="md-nav__item">
   <a href="#contents-table" class="md-nav__link">
-    Contents Table
+    Contents table
   </a>
   
 </li>
@@ -796,7 +796,7 @@
   <h1>Server Specification</h1>
 
 <p>A remote server in Sommelier Drive stores file information in Sommelier DB. That is, it creates DB tables as below.</p>
-<h2 id="user-table">User Table</h2>
+<h2 id="user-table">User table</h2>
 <p><strong>User table</strong> stores the id of a user and the user's PKE and PKSE public keys. They are denoted by <code>userId</code>, <code>dataPK</code>, and <code>keywordPK</code>, respectively, in the following description. </p>
 <table>
 <thead>
@@ -814,7 +814,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="path-table">Path Table</h2>
+<h2 id="path-table">Path table</h2>
 <p><strong>Path table</strong> stores information about the file path. Each record in this table corresponds to a pair of the <code>userId</code> and the file path, <code>filePath</code>. Its columns describe the property of the file or directory located in the <code>filePath</code> as below.</p>
 <table>
 <thead>
@@ -842,7 +842,7 @@
 <li>DataCT: A ciphertext of the <code>filePath</code> encrypted with the <code>dataPK</code> corresponding to the <code>userId</code>.</li>
 <li>KeywordCT: A ciphertext of the <code>filePath</code> encrypted with the <code>keywordPK</code> corresponding to the <code>userId</code>.</li>
 </ul>
-<h2 id="shared-key-table">Shared Key Table</h2>
+<h2 id="shared-key-table">Shared key table</h2>
 <p><strong>Shared Key table</strong> stores a <code>pathId</code> and a shared key encryption, <code>sharedKeyCT</code>. The <code>sharedKeyCT</code> is required to recover the file contents located in the <code>filePath</code> of the <code>pathId</code>.</p>
 <table>
 <thead>
@@ -860,7 +860,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="contents-table">Contents Table</h2>
+<h2 id="contents-table">Contents table</h2>
 <p><strong>Contents table</strong> stores a file contents encryption, <code>contentsCT</code>. Each record corresponds to a <code>sharedKeyHash</code>, which is a hash value of the shared key. Therefore, users who hold the same shared key can access the same record.</p>
 <table>
 <thead>
