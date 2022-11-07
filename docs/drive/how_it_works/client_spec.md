@@ -6,7 +6,7 @@ A client of Sommelier Drive can manage files on the remote server in a similar m
 ## Descendant file paths acquisition (find)
 ## File creation (touch)
 ## Directory creation (mkdir)
-## Modify file
+## File Modification
 
 
 **Note that the other operations, e.g., file deletion, are not supported in the current implementation**.
