@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/drive/intro/">
       
       <link rel="icon" href="../../assets/figs/logo.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -22,7 +22,7 @@
       <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -760,7 +760,7 @@
 <li>The remote server returns the file contents encryption of which the corresponding file path encryption matches with the provided trapdoor.</li>
 <li>The user decrypts the returned encryption with the user's private key, which results in the file contents.</li>
 </ol>
-<p>The above scheme may seem almost the same as the Sommelier DB. The difference is that the user's private and public keys consist of those of PKSE and public-key encryption (PKE). The PKSE scheme is used to allow the server to search for files in the queried file path without revealing them. In addition, the PKE scheme is necessary to obtain the file contents because only with the PKSE scheme the user cannot obtain the unknown message from the ciphertext, even if the PKSE private key is available. In other words, Sommelier Drive requires the PKSE and PKE scheme to test and recover the file path and contents, respectively.</p>
+<p>The above scheme may seem almost the same as the Sommelier DB. The difference is that the user's private and public keys consist of those of PKSE and public-key encryption (PKE). The PKSE scheme is used to allow the server to search for files in the requested file path without revealing them. In addition, the PKE scheme is necessary to obtain the file contents because only with the PKSE scheme the user cannot obtain the unknown message from the ciphertext, even if the PKSE private key is available. In other words, Sommelier Drive requires the PKSE and PKE scheme to test and recover the file path and contents, respectively.</p>
 
 
   
@@ -839,7 +839,7 @@
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

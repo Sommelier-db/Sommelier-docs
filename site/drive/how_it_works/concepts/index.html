@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/concepts/">
       
       <link rel="icon" href="../../../assets/figs/logo.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -22,7 +22,7 @@
       <link rel="stylesheet" href="../../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -769,7 +769,7 @@
 
 <p>Here, we describe new concepts of Sommelier Drive and how they optimize the processes of the data provider and the remote server.</p>
 <h2 id="permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server">Permission hash for the optimization of file path testing on the remote server.</h2>
-<p>First, we introduce a permission hash. This is a hash value calculated from the ID of a legitimate user having read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When querying a file, the user also provides the remote server with the permission hash corresponding to the queried file path, allowing the remote server to narrow down the candidates for file path encryptions to test. In this way, the permission hash optimizes the file path testing on the remote server.</p>
+<p>First, we introduce a permission hash. This is a hash value calculated from the ID of a legitimate user having read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When requesting a file, the user also provides the remote server with the permission hash corresponding to the requested file path, allowing the remote server to narrow down the candidates for file path encryptions to test. In this way, the permission hash optimizes the file path testing on the remote server.</p>
 <p>The attentive reader may think that the permission hash helps the malicious server administrator learn information about the file path. In fact, <strong>it reveals only information about sibling files and directories, i.e., those contained in the same parent directory</strong>. This is because the administrator cannot learn the actual file paths from their permission hash or encryptions but can specify the siblings by comparing the permission hashes.</p>
 <h2 id="shared-key-for-the-optimization-of-encrypting-a-file-for-multiple-users">Shared key for the optimization of encrypting a file for multiple users.</h2>
 <p>A shared key is just a secret key of symmetric key encryption (SKE), e.g., AES. It improves the efficiency when multiple users have read permission for the same file. In more detail, the file contents are encrypted with a fresh shared key, and the shared key is encrypted with each user's PKE public key. The legitimate user can obtain the file contents by (1) recovering the shared key with the PKE private key and (2) decrypting the SKE ciphertexts with the shared key. </p>
@@ -852,7 +852,7 @@
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

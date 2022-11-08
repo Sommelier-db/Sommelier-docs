@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/client_spec/">
       
       <link rel="icon" href="../../../assets/figs/logo.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -22,7 +22,7 @@
       <link rel="stylesheet" href="../../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -570,22 +570,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#filedirectory-acquisition-touch" class="md-nav__link">
-    File/Directory acquisition (touch)
+  <a href="#filedirectory-retrieve-touch" class="md-nav__link">
+    File/Directory retrieve (touch)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#children-file-paths-acquisition-ls" class="md-nav__link">
-    Children file paths acquisition (ls)
+  <a href="#children-file-paths-retrieve-ls" class="md-nav__link">
+    Children file paths retrieve (ls)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#descendant-file-paths-acquisition-find" class="md-nav__link">
-    Descendant file paths acquisition (find)
+  <a href="#descendant-file-paths-retrieve-find" class="md-nav__link">
+    Descendant file paths retrieve (find)
   </a>
   
 </li>
@@ -774,22 +774,22 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#filedirectory-acquisition-touch" class="md-nav__link">
-    File/Directory acquisition (touch)
+  <a href="#filedirectory-retrieve-touch" class="md-nav__link">
+    File/Directory retrieve (touch)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#children-file-paths-acquisition-ls" class="md-nav__link">
-    Children file paths acquisition (ls)
+  <a href="#children-file-paths-retrieve-ls" class="md-nav__link">
+    Children file paths retrieve (ls)
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#descendant-file-paths-acquisition-find" class="md-nav__link">
-    Descendant file paths acquisition (find)
+  <a href="#descendant-file-paths-retrieve-find" class="md-nav__link">
+    Descendant file paths retrieve (find)
   </a>
   
 </li>
@@ -839,12 +839,229 @@
 
 <p>A client of Sommelier Drive can manage files on the remote server in a similar manner to Unix file systems. While our current implementation provides two types of client CLI, both of them perform each operation in the background as below.</p>
 <h2 id="user-registration">User registration</h2>
-<h2 id="filedirectory-acquisition-touch">File/Directory acquisition (touch)</h2>
-<h2 id="children-file-paths-acquisition-ls">Children file paths acquisition (ls)</h2>
-<h2 id="descendant-file-paths-acquisition-find">Descendant file paths acquisition (find)</h2>
+<ol>
+<li>A client generates new pairs of private and public keys of the PKE and PKSE schemes, <code>dataPK</code> and <code>keywordPK</code>.</li>
+<li>The client decides a name of the initial directory <code>initDir</code> and encrypts its file path <code>/'initDir'</code> with the <code>dataPK</code> and <code>keywordPK</code>, which results in the PKE and PKSE ciphertexts <code>dataCT</code> and <code>keywordCT</code>.</li>
+<li>The client posts the <code>dataPK</code>, <code>keywordPK</code>, <code>dataCT</code>, and <code>keywordCT</code> to a remote server.</li>
+<li>The remote server inserts the provided data into the User table and makes a new <code>userId</code>.</li>
+<li>The remote server also inserts the provided ciphertexts and <code>userId</code> into the Path table, where a <code>permissionHash</code> is derived from <code>userId</code> and a root file path <code>/</code> by the remote server.</li>
+<li>The remote server returns <code>userId</code> to the client.</li>
+<li>The client derives <code>permissionHash</code> from the returned <code>userId</code> and <code>/</code> and requests the records in the Path table where a value of PermissionHash column is equal to <code>permissionHash</code>.</li>
+<li>The remote server returns the requested record in the Path table, which includes the id of the file path <code>pathId</code>.</li>
+<li>The client generates a fresh shared key <code>sharedKey</code> and encrypts it with <code>dataPK</code>, which results in the shared key encryption <code>sharedKeyCT</code>.</li>
+<li>The client posts the <code>pathId</code> and <code>sharedKeyCT</code> to the remote server.</li>
+<li>The remote server inserts the provided <code>pathId</code> and <code>sharedKeyCT</code> into the Shared key table.</li>
+<li>The client constructs a bit string called <code>contentsData</code> as the following table:</li>
+<li>The client encrypts the <code>contentsData</code> with the <code>sharedKey</code>, which results in <code>contentsCT</code>.</li>
+<li>The client computes the hash value <code>sharedKeyHash</code> and posts <code>contentsCT</code> and <code>sharedKeyHash</code> to the remote server.</li>
+<li>The remote server inserts the provided <code>contentsCT</code> and <code>sharedKeyHash</code> into the Contents table.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">Field Name</th>
+<th align="center">Bit Size</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>isFile</code></td>
+<td align="center">1</td>
+<td align="left">1 for a file, 0 for a directory.</td>
+</tr>
+<tr>
+<td align="center"><code>numReadableUsers</code></td>
+<td align="center">64</td>
+<td align="left">A big-endian integer of the number of users with read permission.</td>
+</tr>
+<tr>
+<td align="center"><code>readableUserPathIds</code></td>
+<td align="center">64 * <code>numReadableUsers</code></td>
+<td align="left">A vector of <code>pathId</code>s corresponding to this contents.</td>
+</tr>
+<tr>
+<td align="center"><code>fileBytes</code></td>
+<td align="center">variable</td>
+<td align="left">A byte string of the contents of the file for a file, an empty byte string for a directory.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="filedirectory-retrieve-touch">File/Directory retrieve (touch)</h2>
+<p>A client with the <code>userId</code> will retrieve the contents of the file located in the <code>filePath</code> as below.</p>
+<ol>
+<li>The client derives a <code>permissionHash</code> from the <code>userId</code> and the parent directory file path <code>Parent(filePath)</code> and requests the records in the Path table where a value of PermissionHash column is equal to <code>permissionHash</code>.</li>
+<li>The remote server returns the requested records in the Path table.</li>
+<li>For each returned record, the client decrypts its <code>dataCT</code> and find the <code>pathId</code> whose corresponding file path is equal to the <code>filePath</code>.</li>
+<li>The client requests the record in the Shared key table where a value of the PathID column is equal to <code>pathId</code>.</li>
+<li>The remote server returns the requested record in the Shared key table.</li>
+<li>The client recovers the <code>sharedKey</code> from the <code>sharedKeyCT</code> in the returned record.</li>
+<li>The client requests the record in the Contents table where a value of the SharedKeyHash column is equal to <code>sharedKeyHash</code> derived from <code>sharedKey</code>.</li>
+<li>The remote server returns the requested record in the Contents table.</li>
+<li>The client decrypts the <code>contentsCT</code> in the returned record with the <code>sharedKey</code>, which results in the desired <code>contentsData</code>.</li>
+</ol>
+<h2 id="children-file-paths-retrieve-ls">Children file paths retrieve (ls)</h2>
+<p>A client with the <code>userId</code> will retrieve the children file paths under the <code>filePath</code> as below.</p>
+<ol>
+<li>The client derives a <code>permissionHash</code> from the <code>userId</code> and the <code>filePath</code> and requests the records in the Path table where a value of PermissionHash column is equal to <code>permissionHash</code>.</li>
+<li>The remote server returns the requested records in the Path table.</li>
+<li>For each returned record, the client decrypts its <code>dataCT</code>. These recovered file paths are the children file paths under the <code>filePath</code>.</li>
+</ol>
+<h2 id="descendant-file-paths-retrieve-find">Descendant file paths retrieve (find)</h2>
+<p>A client with the <code>userId</code> will retrieve the descendant file paths under the <code>filePath</code> as below.</p>
+<ol>
+<li>The client generates a trapdoor with the PKSE private key for strings with <code>filePath</code> as prefix and requests the records in the Path table where a value of KeywordCT column matches with the trapdoor.</li>
+<li>The remote server returns the requested records in the Path table.</li>
+<li>For each returned record, the client decrypts its <code>dataCT</code>. These recovered file paths are the descendant file paths under the <code>filePath</code>.</li>
+</ol>
 <h2 id="file-creation-touch">File creation (touch)</h2>
+<p>A client with the <code>userId</code> will locate a new file whose contents bytes are <code>bytes</code> in the <code>filePath</code>.</p>
+<ol>
+<li>The client retrieves the <code>contentsData</code> located in <code>Parent(filePath)</code> in the same way as <a href="./#filedirectory-retrieve-touch">the file/directory retrieve process</a>.</li>
+<li>The client parse the <code>contentsData</code> as <code>(isFile, numReadableUsers, readableUserPathIds, fileBytes)</code>.</li>
+<li>The client generates a fresh shared key <code>sharedKey</code> and derives its hash <code>sharedKeyHash</code>.</li>
+<li>For each <code>pathId</code> in the <code>readableUserPathIds</code>, the client and the remote server performs the following process:<ol>
+<li>The client requests the records in the Path table where a value of PathID column is equal to the <code>pathId</code>.</li>
+<li>The remote server returns the requested record in the Path table.</li>
+<li>The client retrieves the <code>usedId</code> from the returned record and requests the records in the User table where a value of UserID column is equal to the <code>userId</code>.</li>
+<li>The remote server returns the requested record in the User table.</li>
+<li>The client retrieves the <code>dataPK</code> and <code>keywordPK</code> from the returned record and encrypts the <code>filePath</code> with these keys, which results in the <code>dataCT</code> and <code>keywordCT</code>, respectively.</li>
+<li>The client also derives the <code>permissionHash</code> from the <code>userId</code> and the <code>Parent(filePath)</code> and posts the <code>userId</code>, <code>permissionHash</code>, <code>dataCT</code>, and <code>keywordCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Path table and returns a new <code>pathId</code>.</li>
+<li>The client encrypts the <code>sharedKey</code> with the <code>dataPK</code>, which results in the <code>sharedKeyCT</code>.</li>
+<li>The client posts the <code>pathId</code> and <code>sharedKeyCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Shared key table.</li>
+</ol>
+</li>
+<li>The client constructs a new <code>contentsData</code> as the following table and encrypts it with the <code>sharedKey</code>, which results in the <code>contentsCT</code>.</li>
+<li>The client posts the <code>sharedKeyHash</code> and <code>contentsCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Contents table.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">Field Name</th>
+<th align="center">Bit Size</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>isFile</code></td>
+<td align="center">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="center"><code>numReadableUsers</code></td>
+<td align="center">64</td>
+<td align="left"><code>numReadableUsers</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>readableUserPathIds</code></td>
+<td align="center">64 * <code>numReadableUsers</code></td>
+<td align="left"><code>readableUserPathIds</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>fileBytes</code></td>
+<td align="center">variable</td>
+<td align="left"><code>bytes</code></td>
+</tr>
+</tbody>
+</table>
 <h2 id="directory-creation-mkdir">Directory creation (mkdir)</h2>
+<p>A client with the <code>userId</code> will locate a new directory in the <code>filePath</code>.</p>
+<ol>
+<li>The client retrieves the <code>contentsData</code> located in <code>Parent(filePath)</code> in the same way as <a href="./#filedirectory-retrieve-touch">the file/directory retrieve process</a>.</li>
+<li>The client parse the <code>contentsData</code> as <code>(isFile, numReadableUsers, readableUserPathIds, fileBytes)</code>.</li>
+<li>The client generates a fresh shared key <code>sharedKey</code> and derives its hash <code>sharedKeyHash</code>.</li>
+<li>For each <code>pathId</code> in the <code>readableUserPathIds</code>, the client and the remote server performs the following process:<ol>
+<li>The client requests the records in the Path table where a value of PathID column is equal to the <code>pathId</code>.</li>
+<li>The remote server returns the requested record in the Path table.</li>
+<li>The client retrieves the <code>usedId</code> from the returned record and requests the records in the User table where a value of UserID column is equal to the <code>userId</code>.</li>
+<li>The remote server returns the requested record in the User table.</li>
+<li>The client retrieves the <code>dataPK</code> and <code>keywordPK</code> from the returned record and encrypts the <code>filePath</code> with these keys, which results in the <code>dataCT</code> and <code>keywordCT</code>, respectively.</li>
+<li>The client also derives the <code>permissionHash</code> from the <code>userId</code> and the <code>Parent(filePath)</code> and posts the <code>userId</code>, <code>permissionHash</code>, <code>dataCT</code>, and <code>keywordCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Path table and returns a new <code>pathId</code>.</li>
+<li>The client encrypts the <code>sharedKey</code> with the <code>dataPK</code>, which results in the <code>sharedKeyCT</code>.</li>
+<li>The client posts the <code>pathId</code> and <code>sharedKeyCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Shared key table.</li>
+</ol>
+</li>
+<li>The client constructs a new <code>contentsData</code> as the following table and encrypts it with the <code>sharedKey</code>, which results in the <code>contentsCT</code>.</li>
+<li>The client posts the <code>sharedKeyHash</code> and <code>contentsCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Contents table.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">Field Name</th>
+<th align="center">Bit Size</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>isFile</code></td>
+<td align="center">1</td>
+<td align="left">0</td>
+</tr>
+<tr>
+<td align="center"><code>numReadableUsers</code></td>
+<td align="center">64</td>
+<td align="left"><code>numReadableUsers</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>readableUserPathIds</code></td>
+<td align="center">64 * <code>numReadableUsers</code></td>
+<td align="left"><code>readableUserPathIds</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>fileBytes</code></td>
+<td align="center">variable</td>
+<td align="left">Empty bytes</td>
+</tr>
+</tbody>
+</table>
 <h2 id="file-modification">File Modification</h2>
+<p>A client with the <code>userId</code> will modify a file located in the <code>filePath</code> with the bytes <code>newBytes</code>.</p>
+<ol>
+<li>The client retrieves the <code>contentsData</code> and <code>sharedKey</code> of the file located in <code>filePath</code> in the same way as <a href="./#filedirectory-retrieve-touch">the file/directory retrieve process</a>.</li>
+<li>The client parse the <code>contentsData</code> as <code>(isFile, numReadableUsers, readableUserPathIds, fileBytes)</code>.</li>
+<li>The client constructs a new <code>contentsData</code> as the following table and encrypts it with the <code>sharedKey</code>, which results in the <code>contentsCT</code>.</li>
+<li>The client posts the <code>sharedKeyHash</code> and <code>contentsCT</code> to the remote server.</li>
+<li>The remote server inserts the provided data into the Contents table.</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th align="center">Field Name</th>
+<th align="center">Bit Size</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><code>isFile</code></td>
+<td align="center">1</td>
+<td align="left">1</td>
+</tr>
+<tr>
+<td align="center"><code>numReadableUsers</code></td>
+<td align="center">64</td>
+<td align="left"><code>numReadableUsers</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>readableUserPathIds</code></td>
+<td align="center">64 * <code>numReadableUsers</code></td>
+<td align="left"><code>readableUserPathIds</code> in Step 2.</td>
+</tr>
+<tr>
+<td align="center"><code>fileBytes</code></td>
+<td align="center">variable</td>
+<td align="left"><code>newBytes</code></td>
+</tr>
+</tbody>
+</table>
 <p><strong>Note that the other operations, e.g., file deletion, are not supported in the current implementation</strong>.</p>
 
 
@@ -924,7 +1141,7 @@
     <script id="__config" type="application/json">{"base": "../../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       

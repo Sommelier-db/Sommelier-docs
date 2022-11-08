@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/db/intro/">
       
       <link rel="icon" href="../../assets/figs/logo.png">
-      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.7">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
@@ -22,7 +22,7 @@
       <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.cbb835fc.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.815d1a91.min.css">
         
       
       
@@ -795,18 +795,18 @@
 
 <h2 id="todays-databases-lack-security">Today's databases lack security.</h2>
 <p>Databases (DBs) play a significant role in today's Internet-based services. 
-For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's query.
+For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's request.
 However, the more data stored in a DB, the more serious the damage of data leakage if that DB is attacked.
 Notably, this is not a theoretical concern, but a real issue. In fact, it is estimated that popular Internet-based services, e.g., Yahoo, Facebook, and LinkedIn, have leaked over 100 million records [1]. 
 From these cases, we believe that we need a solution that can protect the data confidentiality <strong>even if data is leaked from the DB</strong>.</p>
 <h2 id="how-public-key-searchable-encryption-establishes-both-the-convenience-and-security-of-databases">How public-key searchable encryption establishes both the convenience and security of databases.</h2>
 <p>A primitive solution to the above problem is to encrypt all data in the DB so that its contents cannot be known by an adversary who attacks the DB.
-However, it would compromise the convenience of the DB because the server hosting the DB cannot search for the queried data.</p>
+However, it would compromise the convenience of the DB because the server hosting the DB cannot search for the requested data.</p>
 <p>We establish both the convenience and security by encrypting the data by <strong>public-key searchable encryption (PKSE)</strong>.
 PKSE has the same features as standard public-key encryption schemes, e.g., RSA encryption scheme, except that <strong>the private key holder can allow a third party to test whether the encrypted data satisfies some search criteria, without revealing the data and the search criteria</strong> [2].</p>
-<p>In more detail, a user who wishes to search for data first generates a pair of secret and public keys. The public key is made available to a data provider who provides some data. The data provider encrypts the data with the user's public key and stores only the encryption on the DB server. The user then generates data corresponding to the user's search criteria, called <strong>trapdoor</strong>, and sends it to the DB server; the DB server can learn little information from the trapdoor. Since the DB server only receives the encryption and the trapdoor, it can protect the data confidentiality from an adversary who have access to all data in the DB, as well as from a malicious administrator of that server. </p>
+<p>In more detail, a user who wishes to search for data first generates a pair of private and public keys. The public key is made available to a data provider who provides some data. The data provider encrypts the data with the user's public key and stores only the encryption on the DB server. The user then generates data corresponding to the user's search criteria, called <strong>trapdoor</strong>, and sends it to the DB server; the DB server can learn little information from the trapdoor. Since the DB server only receives the encryption and the trapdoor, it can protect the data confidentiality from an adversary who have access to all data in the DB, as well as from a malicious administrator of that server. </p>
 <p><img src="../../assets/figs/sommelier_db_intro_pkse1.png" width="50%" style="display: block; margin: auto;"></p>
-<p>Furthermore, the server can retrieve the encryption of the queried data using a test algorithm of the PKSE scheme. Formally, that algorithm <strong>takes as input encrypted data and a trapdoor and outputs 1 if the data satisfies the search criteria for the provided trapdoor and 0 otherwise</strong>. The server applies it to all candidate encryptions with the provided trapdoor and returns to the user only those encryptions for which it returns 1. In this way, the user can have the DB server search for apposite data as before.</p>
+<p>Furthermore, the server can retrieve the encryption of the requested data using a test algorithm of the PKSE scheme. Formally, that algorithm <strong>takes as input encrypted data and a trapdoor and outputs 1 if the data satisfies the search criteria for the provided trapdoor and 0 otherwise</strong>. The server applies it to all candidate ciphertexts with the provided trapdoor and returns to the user only those for which it returns 1. In this way, the user can have the DB server search for apposite data as before.</p>
 <p><img src="../../assets/figs/sommelier_db_intro_pkse2.png" width="50%" style="display: block; margin: auto;"></p>
 <h2 id="sommelier-db-the-worlds-first-open-source-database-based-on-public-key-searchable-encryption">Sommelier DB: the world's first open source database based on public-key searchable encryption.</h2>
 <p>Following the approach described above, we propose a new PKSE-based DB library, Sommelier DB. While the PKSE-based DB has been considered in various studies [2-5], as far as our knowledge there are no open source implementations other than ours.</p>
@@ -902,7 +902,7 @@ PKSE has the same features as standard public-key encryption schemes, e.g., RSA 
     <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.8492ddcf.min.js"></script>
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
       
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
       
