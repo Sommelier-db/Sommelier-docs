@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-skip">
+        <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-skip">
           Skip to content
         </a>
       
@@ -535,8 +535,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-nav__link">
-    Permission hash for the optimization of file path testing on the remote server.
+  <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-nav__link">
+    Permission hash for the optimization of the ls operation.
   </a>
   
 </li>
@@ -732,8 +732,8 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server" class="md-nav__link">
-    Permission hash for the optimization of file path testing on the remote server.
+  <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-nav__link">
+    Permission hash for the optimization of the ls operation.
   </a>
   
 </li>
@@ -768,8 +768,8 @@
   <h1>New Concepts</h1>
 
 <p>Here, we describe new concepts of Sommelier Drive and how they optimize the processes of the data provider and the remote server.</p>
-<h2 id="permission-hash-for-the-optimization-of-file-path-testing-on-the-remote-server">Permission hash for the optimization of file path testing on the remote server.</h2>
-<p>First, we introduce a permission hash. This is a hash value calculated from the ID of a legitimate user having read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When requesting a file, the user also provides the remote server with the permission hash corresponding to the requested file path, allowing the remote server to narrow down the candidates for file path encryptions to test. In this way, the permission hash optimizes the file path testing on the remote server.</p>
+<h2 id="permission-hash-for-the-optimization-of-the-ls-operation">Permission hash for the optimization of the ls operation.</h2>
+<p>First, we introduce a permission hash. This is a hash value calculated from the ID of a legitimate user having read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When the user wishes to perform the <code>ls</code> operation, that is to say, retrieve the children file paths of a directory, the user provides the remote server with the permission hash corresponding to that directory file path instead of the trapdoor. The remote server returns the file path encryptions whose corresponding permission hash is equal to the provided one. In this way, the permission hash can optimize the ls operation on the remote server.</p>
 <p>The attentive reader may think that the permission hash helps the malicious server administrator learn information about the file path. In fact, <strong>it reveals only information about sibling files and directories, i.e., those contained in the same parent directory</strong>. This is because the administrator cannot learn the actual file paths from their permission hash or encryptions but can specify the siblings by comparing the permission hashes.</p>
 <h2 id="shared-key-for-the-optimization-of-encrypting-a-file-for-multiple-users">Shared key for the optimization of encrypting a file for multiple users.</h2>
 <p>A shared key is just a secret key of symmetric key encryption (SKE), e.g., AES. It improves the efficiency when multiple users have read permission for the same file. In more detail, the file contents are encrypted with a fresh shared key, and the shared key is encrypted with each user's PKE public key. The legitimate user can obtain the file contents by (1) recovering the shared key with the PKE private key and (2) decrypting the SKE ciphertexts with the shared key. </p>
