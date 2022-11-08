@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#rest-apis" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -582,9 +587,38 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Server REST APIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Server REST APIs
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rest-apis" class="md-nav__link">
+    REST APIs
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -684,6 +718,21 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#rest-apis" class="md-nav__link">
+    REST APIs
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -704,7 +753,250 @@
 
   <h1>Server REST APIs</h1>
 
-
+<p>A server of the Sommelier Drive provides the following REST APIs.</p>
+<h2 id="rest-apis">REST APIs</h2>
+<ul>
+<li>GET /user</li>
+</ul>
+<p>Returns a record in the User table where a value of the UserID column is <code>userId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;userId&quot;: Int
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;userId&quot;: Int,
+    &quot;dataPK&quot;: String,
+    &quot;keywordPK&quot;: String,
+    &quot;nonce&quot;: Int
+}
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>POST /user</li>
+</ul>
+<p>Takes as input public keys and file path encryptions of the PKE and PKSE schemes, inserts them in the User table and Path table, and returns a new <code>userId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;dataPK&quot;: String,
+    &quot;keywordPK&quot;: String,
+    &quot;dataCT&quot;: String,
+    &quot;keywordCT&quot;: String,
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response: <code>Int</code></p>
+<ul>
+<li>GET /file-path</li>
+</ul>
+<p>Returns a record in the Path table where a value of the PathID column is <code>pathId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;pathId&quot;: Int
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;pathId&quot;: Int,
+    &quot;userId&quot;: Int,
+    &quot;permissionHash&quot;: String,
+    &quot;dataCT&quot;: String,
+    &quot;keywordCT&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>GET /file-path/children</li>
+</ul>
+<p>Returns a list of records in the Path table where a value of the PermissionHash column is equal to the <code>permissionHash</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;permissionHash&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code>[
+    {
+        &quot;pathId&quot;: Int,
+        &quot;userId&quot;: Int,
+        &quot;permissionHash&quot;: String,
+        &quot;dataCT&quot;: String,
+        &quot;keywordCT&quot;: String
+    },
+    ...
+]
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>GET /file-path/search</li>
+</ul>
+<p>Takes as input a <code>userId</code> and a trapdoor <code>td</code> and returns records in the Path table where a value of the UserID column is <code>userId</code> and a ciphertext <code>ct</code> of the KeywordCT column satisfies <code>test_cipher(ct,td)==1</code>.</p>
+<p>Request:</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;userId&quot;: Int,
+    &quot;trapdoor&quot;: String
+}
+</code></pre></div></td></tr></table></div>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code>[
+    {
+        &quot;pathId&quot;: Int,
+        &quot;userId&quot;: Int,
+        &quot;permissionHash&quot;: String,
+        &quot;dataCT&quot;: String,
+        &quot;keywordCT&quot;: String
+    },
+    ...
+]
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>POST /file-path</li>
+</ul>
+<p>Takes as input <code>readUserId</code>, <code>premissionHash</code>, <code>dataCT</code>, and <code>keywordCT</code>, inserts them into the Path table, and returns a new <code>pathId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;readUserId&quot;: Int,
+    &quot;premissionHash&quot;: String,
+    &quot;dataCT&quot;: String,
+    &quot;keywordCT&quot;: String,
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response: <code>Int</code></p>
+<ul>
+<li>GET /shared-key</li>
+</ul>
+<p>Returns a record in the Shared Key table where a value of the PathID column is <code>pathId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;pathId&quot;: Int
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;sharedKeyId&quot;: Int,
+    &quot;pathId&quot;: Int,
+    &quot;ct&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>POST /shared-key</li>
+</ul>
+<p>Takes as input <code>pathId</code> and <code>ct</code>, inserts them into the Shared key table, and returns a new <code>sharedKeyId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;pathId&quot;: Int,
+    &quot;ct&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response: <code>Int</code></p>
+<ul>
+<li>GET /contents</li>
+</ul>
+<p>Returns a record in the Contents table where a value of the SharedKeyHash column is equal to the <code>sharedKeyHash</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;sharedKeyHash&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;contentsId&quot;: Int,
+    &quot;sharedKeyHash&quot;: String,
+    //”authorizationPK”: String,
+    &quot;nonce&quot;: Int
+    &quot;ct&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<ul>
+<li>POST /contents</li>
+</ul>
+<p>Takes as input <code>sharedKeyHash</code> and <code>ct</code>, inserts them into the Contents table, and returns a new <code>contentsId</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;sharedKeyHash&quot;: String,
+    &quot;ct&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response: <code>Int</code></p>
+<ul>
+<li>PUT /contents</li>
+</ul>
+<p>Takes as input <code>sharedKeyHash</code> and <code>ct</code>, modifies a value of the ContentsCT column in the record where a value of the SharedKeyHash column is equal to the <code>sharedKeyHash</code>.</p>
+<p>Request:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span></pre></div></td><td class="code"><div><pre><span></span><code>{
+    &quot;sharedKeyHash&quot;: String,
+    &quot;ct&quot;: String
+}
+</code></pre></div></td></tr></table></div></p>
+<p>Response: <code>Int</code></p>
 
 
   

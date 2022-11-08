@@ -24,7 +24,7 @@ A client of Sommelier Drive can manage files on the remote server in a similar m
 | `readableUserPathIds` | 64 * `numReadableUsers` | A vector of `pathId`s corresponding to this contents.|
 | `fileBytes` | variable | A byte string of the contents of the file for a file, an empty byte string for a directory.|
 
-## File/Directory retrieve (touch)
+## File retrieve (cat)
 A client with the `userId` will retrieve the contents of the file located in the `filePath` as below.
 
 1. The client derives a `permissionHash` from the `userId` and the parent directory file path `Parent(filePath)` and requests the records in the Path table where a value of PermissionHash column is equal to `permissionHash`.
