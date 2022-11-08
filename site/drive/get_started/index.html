@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#requirements" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -465,9 +470,52 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Get Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Get Started
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operate-files-with-sommelier-drive" class="md-nav__link">
+    Operate files with Sommelier Drive!
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -682,6 +730,35 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#requirements" class="md-nav__link">
+    Requirements
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#setup" class="md-nav__link">
+    Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#operate-files-with-sommelier-drive" class="md-nav__link">
+    Operate files with Sommelier Drive!
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -702,7 +779,74 @@
 
   <h1>Get Started</h1>
 
-
+<h2 id="requirements">Requirements</h2>
+<p>To run the server, the following tools are required:</p>
+<ul>
+<li><a href="https://github.com/Sommelier-db/sommelier-db">Sommelier-DB</a></li>
+<li>jasson (json library)</li>
+</ul>
+<p>To run the client, the following tools are required:</p>
+<ul>
+<li>rustc 1.65.0-nightly</li>
+<li>cargo 1.65.0-nightly</li>
+<li>cbindgen 0.24.3</li>
+</ul>
+<h2 id="setup">Setup</h2>
+<p>We open the <strong>first</strong> terminal for running the server and clone the server repository.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>git clone https://github.com/Sommelier-db/sommelier-drive-server
+<span class="nb">cd</span> sommelier-drive-server
+git submodule update --init --recursive
+</code></pre></div></td></tr></table></div></p>
+<p>The sommelier-drive-server is built as below:
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>make init
+make
+</code></pre></div></td></tr></table></div></p>
+<p>We then open the <strong>second</strong> terminal for running the client CLI and clone the client repository.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>git clone https://github.com/Sommelier-db/sommelier-drive-client
+<span class="nb">cd</span> sommelier-drive-client
+git submodule update --init --recursive
+</code></pre></div></td></tr></table></div></p>
+<p>The sommelier-drive-client is built by simply executing the <code>build.sh</code>.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>./build.sh
+</code></pre></div></td></tr></table></div></p>
+<h2 id="operate-files-with-sommelier-drive">Operate files with Sommelier Drive!</h2>
+<p>Now, let's operate files with Sommelier Drive!
+You will notice that the UX of Sommelier Drive is almost the same as existing Unix file systems, which you probably use every day.</p>
+<p>On the <strong>first</strong> terminal, we run the server.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>build/main
+</code></pre></div></td></tr></table></div>
+If there is no issue, the server will stand at the URL <code>http://localhost:8000/api</code>.</p>
+<p>On the <strong>second</strong> terminal, we manage the files on that server.
+While performing the following operations, also look at the first terminal running the server.
+You can find that no file path or contents appear on the server side!</p>
+<p>We first create a new user account and creates an initial directory <code>/data1</code> under the root directory.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>&gt;&gt; register /data1
+</code></pre></div></td></tr></table></div>
+We then create a file and a directory under the <code>/data1</code>.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>&gt;&gt; touch /data1/hello.txt
+&gt;&gt; mkdir /data1/subdata1
+</code></pre></div></td></tr></table></div>
+Say hello to Sommelier Drive in the <code>/data1/hello.txt</code>!
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>&gt;&gt; cat /data1/hello.txt
+&gt;&gt; modify /data1/hello.txt Hello,SommelierDrive!
+&gt;&gt; cat /data1/hello.txt
+</code></pre></div></td></tr></table></div>
+We can check the children files or directories under the <code>/data1</code>.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>&gt;&gt; ls /data1
+</code></pre></div></td></tr></table></div>
+We finally create a file in a deeper location and find them.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>&gt;&gt; touch /data1/subdata1/goodbye.c
+&gt;&gt; find /data1
+</code></pre></div></td></tr></table></div></p>
 
 
   

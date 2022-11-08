@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#cli-commands" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -596,9 +601,100 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Client APIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Client APIs
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cli-commands" class="md-nav__link">
+    CLI Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#register-initdirpath" class="md-nav__link">
+    register initDirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#touch-filepath" class="md-nav__link">
+    touch filePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdir-dirpath" class="md-nav__link">
+    mkdir dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cat-filepath" class="md-nav__link">
+    cat filePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify-filepath-text" class="md-nav__link">
+    modify filePath text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls-dirpath" class="md-nav__link">
+    ls dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-dirpath" class="md-nav__link">
+    find dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exit" class="md-nav__link">
+    exit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -684,6 +780,83 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cli-commands" class="md-nav__link">
+    CLI Commands
+  </a>
+  
+    <nav class="md-nav" aria-label="CLI Commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#register-initdirpath" class="md-nav__link">
+    register initDirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#touch-filepath" class="md-nav__link">
+    touch filePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdir-dirpath" class="md-nav__link">
+    mkdir dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cat-filepath" class="md-nav__link">
+    cat filePath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modify-filepath-text" class="md-nav__link">
+    modify filePath text
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ls-dirpath" class="md-nav__link">
+    ls dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#find-dirpath" class="md-nav__link">
+    find dirPath
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exit" class="md-nav__link">
+    exit
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -704,7 +877,75 @@
 
   <h1>Client APIs</h1>
 
-
+<p>Our client implementation currently provides the following CLI commands.</p>
+<h2 id="cli-commands">CLI Commands</h2>
+<h3 id="register-initdirpath">register <code>initDirPath</code></h3>
+<p>Create a new user account and the user's initial directory under the root directory.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>initDirPath</code>: A file path of the initial directory.</li>
+</ol>
+</li>
+<li>Example: <code>register /data1</code></li>
+</ul>
+<p><strong>Note: Before running the following commands, you must create a user account with this command!</strong></p>
+<h3 id="touch-filepath">touch <code>filePath</code></h3>
+<p>Create a new file with an empty contents.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>filePath</code>: A file path.</li>
+</ol>
+</li>
+<li>Example: <code>touch /data1/test.txt</code></li>
+</ul>
+<h3 id="mkdir-dirpath">mkdir <code>dirPath</code></h3>
+<p>Create a new directory.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>dirPath</code>: A directory path.</li>
+</ol>
+</li>
+<li>Example: <code>mkdir /data1/subdata</code></li>
+</ul>
+<h3 id="cat-filepath">cat <code>filePath</code></h3>
+<p>Retrieve a text in the file located in the given file path.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>filePath</code>: A file path.</li>
+</ol>
+</li>
+<li>Example: <code>cat /data1/test.txt</code></li>
+</ul>
+<h3 id="modify-filepath-text">modify <code>filePath</code> <code>text</code></h3>
+<p>Modify the file contents located in the given file path with the given text.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>filePath</code>: A file path of the file to be modified.</li>
+<li><code>text</code>: A text written in the file.</li>
+</ol>
+</li>
+<li>Example: <code>modify /data1/test.txt Hello!</code></li>
+</ul>
+<h3 id="ls-dirpath">ls <code>dirPath</code></h3>
+<p>Retrieve a childlen file paths under the given file path.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>dirPath</code>: A directory path.</li>
+</ol>
+</li>
+<li>Example: <code>ls /data1</code></li>
+</ul>
+<h3 id="find-dirpath">find <code>dirPath</code></h3>
+<p>Retrieve a descendent file paths under the given file path.</p>
+<ul>
+<li>Inputs:<ol>
+<li><code>dirPath</code>: A directory path.</li>
+</ol>
+</li>
+<li>Example: <code>find /data1</code></li>
+</ul>
+<h3 id="exit">exit</h3>
+<p>Exit the CLI.</p>
 
 
   
