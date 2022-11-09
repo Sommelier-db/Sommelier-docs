@@ -8,14 +8,14 @@
       
       
       
-        <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/blog/pkse/">
+        <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/blog/db_speed_up/">
       
       <link rel="icon" href="../../assets/figs/logo.png">
       <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.8">
     
     
       
-        <title>How we implemented expressive search criteria with minimum effort. - Sommelier DB Docs</title>
+        <title>Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION - Sommelier DB Docs</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#author-sora-suegami" class="md-skip">
+        <a href="#author-takaki-hamada" class="md-skip">
           Skip to content
         </a>
       
@@ -112,7 +112,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              How we implemented expressive search criteria with minimum effort.
+              Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
             
           </span>
         </div>
@@ -274,7 +274,7 @@
   
   
     <li class="md-tabs__item">
-      <a href="./" class="md-tabs__link md-tabs__link--active">
+      <a href="../pkse/" class="md-tabs__link md-tabs__link--active">
         Developer's Blog
       </a>
     </li>
@@ -723,6 +723,20 @@
               
   
   
+  
+    <li class="md-nav__item">
+      <a href="../pkse/" class="md-nav__link">
+        How we implemented expressive search criteria with minimum effort.
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
     
   
   
@@ -733,12 +747,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          How we implemented expressive search criteria with minimum effort.
+          Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        How we implemented expressive search criteria with minimum effort.
+        Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
       </a>
       
         
@@ -755,29 +769,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#author-sora-suegami" class="md-nav__link">
-    Author: Sora Suegami
+  <a href="#author-takaki-hamada" class="md-nav__link">
+    Author: Takaki Hamada
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#prefix-search" class="md-nav__link">
-    Prefix search
+  <a href="#speed-up-sql-processing-in-sommelier-drive-server" class="md-nav__link">
+    Speed Up SQL Processing in Sommelier Drive Server.
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#range-search" class="md-nav__link">
-    Range search
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
+  <a href="#management-transaction-in-sommelier-drive-server" class="md-nav__link">
+    Management Transaction in Sommelier Drive Server.
   </a>
   
 </li>
@@ -786,20 +793,6 @@
   
 </nav>
       
-    </li>
-  
-
-            
-          
-            
-              
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../db_speed_up/" class="md-nav__link">
-        Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
-      </a>
     </li>
   
 
@@ -836,29 +829,22 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#author-sora-suegami" class="md-nav__link">
-    Author: Sora Suegami
+  <a href="#author-takaki-hamada" class="md-nav__link">
+    Author: Takaki Hamada
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#prefix-search" class="md-nav__link">
-    Prefix search
+  <a href="#speed-up-sql-processing-in-sommelier-drive-server" class="md-nav__link">
+    Speed Up SQL Processing in Sommelier Drive Server.
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#range-search" class="md-nav__link">
-    Range search
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
+  <a href="#management-transaction-in-sommelier-drive-server" class="md-nav__link">
+    Management Transaction in Sommelier Drive Server.
   </a>
   
 </li>
@@ -877,162 +863,25 @@
                 
                   
 
-  <a href="https://github.com/Sommelier-db/Sommelier-docs/edit/main/docs/blog/pkse.md" title="Edit this page" class="md-content__button md-icon">
+  <a href="https://github.com/Sommelier-db/Sommelier-docs/edit/main/docs/blog/db_speed_up.md" title="Edit this page" class="md-content__button md-icon">
     
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
   </a>
 
 
-  <h1>How we implemented expressive search criteria with minimum effort.</h1>
+  <h1>Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION</h1>
 
-<h4 id="author-sora-suegami">Author: Sora Suegami</h4>
-<p>In this post, I describe how we implemented <a href="https://github.com/Sommelier-db/rust-searchable-pke">our new PKSE library</a>. As described in its README.md, our library provides Public-key encryption with conjunctive and disjunctive keyword search (PECDK) [1] as an underlying scheme. The PECDK supports conjunction and disjunction of multiple keywords as search criteria, which is rather expressive in the research field of public-key searchable encryption (PKSE). However, to provide the same level of functionality as SQL, more complex search criteria need to be addressed. <strong>We filled this gap without implementing new PKSE schemes by devising how to construct the keywords to be encrypted in the PECDK scheme.</strong></p>
-<p>Specifically, our library supports <strong>prefix</strong> and <strong>range</strong> search. The former encrypts a string and retrieves the encryption whose string has the specified prefix, and the latter encrypts an unsigned integer and retrieves the encryption whose integer is within the specified range. In the following, I explain those background designs and implementations.</p>
-<h2 id="prefix-search">Prefix search</h2>
-<p>In the prefix search, a string is decomposed into bytes, and a pair of each byte and its index forms a single keyword. For example, a string <code>"abcde"</code> will be keywords <code>[(0,"a"), (1, "b"), (2,"c"), (3,"d"), (4, "e")]</code>. In our library, this keyword construction is implemented in Rust as below.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>let mut keywords = bytes
-        .into_iter()
-        .enumerate()
-        .map(|(idx, byte)| {
-            concat_multi_bytes(vec![
-                region_name.as_bytes(),
-                &amp;idx.to_be_bytes(),
-                &amp;vec![1u8, *byte],
-            ])
-        })
-        .collect::&lt;Vec&lt;Vec&lt;u8&gt;&gt;&gt;();
-</code></pre></div></td></tr></table></div>
-The variable <code>idx</code> and <code>byte</code> represent the index and the byte, respectively. The <code>region_name</code> is a fixed, application-specific string used to distinguish the same string encrypted for different applications. The byte <code>1</code> is also necessary to distinguish an empty keyword, namely all-zero bytes. The function <code>concat_multi_bytes</code> concats all of the given bytes. In this way, with minor exceptions, our implementation is consistent with the above description.</p>
-<p>The trapdoor for the prefix search is for a conjunction of keywords derived from a prefix string. For instance, the trapdoor for the prefix <code>"abc"</code> corresponds to the conjunction of keywords <code>[(0,"a"), (1, "b"), (2,"c")]</code>. Since the keywords of string with that prefix should include the same keywords, the trapdoor can match the appropriate string encryptions with the PECDK scheme.</p>
-<h2 id="range-search">Range search</h2>
-<p>The range search is more complex than the prefix search, but more interesting! Our first idea for the range search is to divide the entire range of integers into certain smaller ranges and encrypt the range containing the　target integer as keyword. As an example, consider an integer <span class="arithmatex">\(x\)</span> within the range <span class="arithmatex">\([0, 50)\)</span>. We first divide that entire range into ranges of size 10, i.e., <span class="arithmatex">\([0,10), [10,20), [20,30), [30,40), [40,50)\)</span>. The encryption of <span class="arithmatex">\(x=15\)</span> will be the encryption of the keyword <span class="arithmatex">\([10,20)\)</span> as <span class="arithmatex">\(x \in [10, 20)\)</span> holds. The trapdoor for the itenger within the range <span class="arithmatex">\([10,30)\)</span> will correspond to a disjunction of keywords <span class="arithmatex">\([10,20), [20,30)\)</span>. </p>
-<p>Although the above approach is easy to implement, it has two downsides.</p>
-<ol>
-<li>It cannot cover an exponentially-large range.</li>
-<li>It cannot generate a trapdoor for a range whose size is not a multiple of the size of the divided range (e.g., 10 in the above example).</li>
-</ol>
-<p>To overcome them, we adopt an approach proposed in [2]. In a nutshell, it constructs a binary tree corresponding to the entire range and encrypts a node of each height as a keyword.
-For example, for an 4-bit integer <span class="arithmatex">\(x\)</span>, the following binary tree is considered. The encryption of <span class="arithmatex">\(9=1001_2\)</span> will be for the keywords <span class="arithmatex">\(((1, 1_2), (2, 10_2), (3, 100_2), (4, 1001_1))\)</span>. Notably, the number of keywords to be encrypted is <strong>only <span class="arithmatex">\(t\)</span> for the exponentially-large range <span class="arithmatex">\([0,2^t)\)</span></strong> in this scheme!
-<img src="../range_binary_tree.png" width="100%" style="display: block; margin: auto;"></p>
-<p>The trapdoor is generated for the disjunction of the nodes that cover all leafs within the specified range. In the above example, nodes <span class="arithmatex">\((0101_2, 011_2, 10_2, 110_2)\)</span> covers all leafs within the range <span class="arithmatex">\([0101_2, 1101_2]\)</span>, i.e., <span class="arithmatex">\([5, 13]\)</span>. It implies that the integer within that range should have at least one of the nodes <span class="arithmatex">\((0101_2, 011_2, 10_2, 110_2)\)</span>. Therefore, the disjunction of these nodes matches the appropriate integer encryption. Furthermore, there are no restrictions as in our initial idea regarding the position and size of the range to be specified. However, the minimum set of cover nodes is not sufficient to protect the privacy of search criteria because its size is not consistent for two different ranges with the same size. (E.g., the range <span class="arithmatex">\([0,8]\)</span> has the same size with <span class="arithmatex">\([5, 13]\)</span>, but its minimum set of cover nodes is just two nodes, namely <span class="arithmatex">\((0_2, 1000_2)\)</span>!) The author of [2] solves this problem by considering a "minimal universal cover [2]", which is "a cover with a number of nodes and depths that is the same for any two ranges of the same size [2]". Such cover nodes leaks only the size of the specified range. Our implementation produces it following the procedures in Appendix A of [2], as below.
-<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
-<span class="normal"> 2</span>
-<span class="normal"> 3</span>
-<span class="normal"> 4</span>
-<span class="normal"> 5</span>
-<span class="normal"> 6</span>
-<span class="normal"> 7</span>
-<span class="normal"> 8</span>
-<span class="normal"> 9</span>
-<span class="normal">10</span>
-<span class="normal">11</span>
-<span class="normal">12</span>
-<span class="normal">13</span>
-<span class="normal">14</span>
-<span class="normal">15</span>
-<span class="normal">16</span>
-<span class="normal">17</span>
-<span class="normal">18</span>
-<span class="normal">19</span>
-<span class="normal">20</span>
-<span class="normal">21</span>
-<span class="normal">22</span>
-<span class="normal">23</span>
-<span class="normal">24</span>
-<span class="normal">25</span>
-<span class="normal">26</span>
-<span class="normal">27</span>
-<span class="normal">28</span>
-<span class="normal">29</span>
-<span class="normal">30</span>
-<span class="normal">31</span>
-<span class="normal">32</span>
-<span class="normal">33</span>
-<span class="normal">34</span>
-<span class="normal">35</span>
-<span class="normal">36</span>
-<span class="normal">37</span>
-<span class="normal">38</span>
-<span class="normal">39</span>
-<span class="normal">40</span>
-<span class="normal">41</span>
-<span class="normal">42</span>
-<span class="normal">43</span>
-<span class="normal">44</span>
-<span class="normal">45</span>
-<span class="normal">46</span>
-<span class="normal">47</span>
-<span class="normal">48</span>
-<span class="normal">49</span>
-<span class="normal">50</span>
-<span class="normal">51</span></pre></div></td><td class="code"><div><pre><span></span><code>fn get_canonical_cover_nodes(min: u64, max: u64, bit_size: usize) -&gt; HashSet&lt;Vec&lt;bool&gt;&gt; {
-    let n1 = max - min + 1;
-    let l = (n1 as f64 + 1.0).log2().floor() as usize;
-    let n2 = n1 + 1 - (1 &lt;&lt; l);
-
-    let mut nodes = HashSet::new();
-    let mut allowed_lens = HashMultiSet::new();
-    for i in 0..l {
-        allowed_lens.insert(bit_size - i);
-    }
-    let n2_bits = uint2bits(n2, bit_size);
-    for (i, bit) in n2_bits.into_iter().rev().enumerate() {
-        if bit {
-            allowed_lens.insert(bit_size - i);
-        }
-    }
-
-    let mut min = min;
-    while !allowed_lens.is_empty() {
-        let next_node = get_canonical_next_max(min, max, bit_size, &amp;allowed_lens);
-        min = compute_max_uint(&amp;next_node, bit_size) + 1;
-        allowed_lens.remove(&amp;next_node.len());
-        nodes.insert(next_node);
-    }
-    nodes
-}
-
-fn get_canonical_next_max(
-    min: u64,
-    max: u64,
-    bit_size: usize,
-    allowed_lens: &amp;HashMultiSet&lt;usize&gt;,
-) -&gt; Vec&lt;bool&gt; {
-    let mut bits_pattern = uint2bits(min, bit_size);
-    let min_size_in_set = *allowed_lens.iter().min().unwrap();
-    while bits_pattern.len() &gt;= 2
-        &amp;&amp; (compute_min_uint(&amp;bits_pattern[0..bits_pattern.len() - 1], bit_size) &gt;= min)
-        &amp;&amp; (compute_max_uint(&amp;bits_pattern[0..bits_pattern.len() - 1], bit_size) &lt;= max)
-        &amp;&amp; (allowed_lens.contains(&amp;(bits_pattern.len() - 1))
-            || bits_pattern.len() - 1 &gt;= min_size_in_set)
-    {
-        bits_pattern.pop();
-    }
-    bits_pattern
-}
-
-fn compute_min_uint(bits: &amp;[bool], bit_size: usize) -&gt; u64 {
-    let mut min_bits = bits.to_vec();
-    min_bits.append(&amp;mut vec![false; bit_size - bits.len()]);
-    bits2uint(&amp;min_bits)
-}
-</code></pre></div></td></tr></table></div>
-In this way, we can effectively perform the range search without revealing information about the range other than its size.</p>
-<h2 id="reference">Reference</h2>
-<ol>
-<li>Zhang, Y., Li, Y., &amp; Wang, Y. (2019). Secure and efficient searchable public key encryption for resource constrained environment based on pairings under prime order group. Security and Communication Networks, 2019.</li>
-<li>Faber, S., Jarecki, S., Krawczyk, H., Nguyen, Q., Rosu, M., &amp; Steiner, M. (2015, September). Rich queries on encrypted data: Beyond exact matches. In European symposium on research in computer security (pp. 123-145). Springer, Cham.</li>
-</ol>
+<h4 id="author-takaki-hamada">Author: Takaki Hamada</h4>
+<h2 id="speed-up-sql-processing-in-sommelier-drive-server">Speed Up SQL Processing in Sommelier Drive Server.</h2>
+<p>In <code>Sommelier Drive Server</code>, the data processed by <code>Drive</code> are including huge encrypted contents, such as PKSE cipher text.
+Therefore, when executing multiple <code>INSERT</code> query, the Sommelier DB processing became very slow and <code>Drive</code> command processing took more than a minute.
+To resolve this problem, I customized the issuing of transactions in SQL query.</p>
+<h2 id="management-transaction-in-sommelier-drive-server">Management Transaction in Sommelier Drive Server.</h2>
+<p>In Sommelier DB (and SQLite3 it is copied from) <code>INSERT</code> query, transaction management execute internaly per query.
+So, when adding multiple rows into table at once, programer should manage the DB transaction manually and execute several <code>INSERT</code> query in one transaction to speed up DB processing.
+At the implementation of <code>Sommelier Drive Server</code>, speed up processing by managing the <code>TRANSACTION</code> to be <code>COMMIT</code> and <code>BEGIN</code> again every 10 <code>INSERT</code> queries issued.
+An example of controlling <code>TRANSACTION</code> in C API is implemented at 
+<a href="https://github.com/Sommelier-db/sommelier-drive-server/blob/develop/src/dbms.c"><code>sommelier-drive-server/src/dbms.c</code></a>.</p>
 
 
   
@@ -1055,7 +904,7 @@ In this way, we can effectively perform the range search without revealing infor
     <nav class="md-footer__inner md-grid" aria-label="Footer" >
       
         
-        <a href="../../glibc/blog-ja/" class="md-footer__link md-footer__link--prev" aria-label="Previous: glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]" rel="prev">
+        <a href="../pkse/" class="md-footer__link md-footer__link--prev" aria-label="Previous: How we implemented expressive search criteria with minimum effort." rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
           </div>
@@ -1064,26 +913,11 @@ In this way, we can effectively perform the range search without revealing infor
               <span class="md-footer__direction">
                 Previous
               </span>
-              glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]
+              How we implemented expressive search criteria with minimum effort.
             </div>
           </div>
         </a>
       
-      
-        
-        <a href="../db_speed_up/" class="md-footer__link md-footer__link--next" aria-label="Next: Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION" rel="next">
-          <div class="md-footer__title">
-            <div class="md-ellipsis">
-              <span class="md-footer__direction">
-                Next
-              </span>
-              Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
-            </div>
-          </div>
-          <div class="md-footer__button md-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
-          </div>
-        </a>
       
     </nav>
   

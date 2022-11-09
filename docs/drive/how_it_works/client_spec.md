@@ -1,3 +1,5 @@
+#### Author: Sora Suegami
+
 A client of Sommelier Drive can manage files on the remote server in a similar manner to Unix file systems. It performs each operation in the background as below.
 
 ## User registration

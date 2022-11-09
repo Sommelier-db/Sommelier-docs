@@ -1,3 +1,5 @@
+#### Author: Sora Suegami
+
 ## Requirements
 To run the server, the following tools are required:
 

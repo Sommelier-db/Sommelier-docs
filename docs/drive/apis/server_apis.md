@@ -1,3 +1,5 @@
+#### Author: Sora Suegami
+
 A server of the Sommelier Drive provides the following REST APIs.
 
 ## REST APIs

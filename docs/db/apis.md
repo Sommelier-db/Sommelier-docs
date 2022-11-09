@@ -1,3 +1,5 @@
+#### Author: Takaki Hamada
+
 ## APIs detail.
 
 Sommelier DB APIs are constructed from,

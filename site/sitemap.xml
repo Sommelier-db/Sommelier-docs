@@ -6,6 +6,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/blog/db_speed_up/</loc>
+         <lastmod>2022-11-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://sommelier-db.github.io/Sommelier-docs/blog/pkse/</loc>
          <lastmod>2022-11-09</lastmod>
          <changefreq>daily</changefreq>
@@ -62,6 +67,16 @@
     </url>
     <url>
          <loc>https://sommelier-db.github.io/Sommelier-docs/drive/how_it_works/server_spec/</loc>
+         <lastmod>2022-11-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/glibc/blog-ja/</loc>
+         <lastmod>2022-11-09</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://sommelier-db.github.io/Sommelier-docs/glibc/blog/</loc>
          <lastmod>2022-11-09</lastmod>
          <changefreq>daily</changefreq>
     </url>

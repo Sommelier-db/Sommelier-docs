@@ -1,3 +1,5 @@
+#### Author: Takaki Hamada
+
 ## Install Sommelier DB
 
 <!-- Sommelier DB のリポジトリへ誘導するようにした -->

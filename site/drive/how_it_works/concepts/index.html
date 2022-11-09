@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-skip">
+        <a href="#author-sora-suegami" class="md-skip">
           Skip to content
         </a>
       
@@ -244,6 +244,22 @@
     <li class="md-tabs__item">
       <a href="../../intro/" class="md-tabs__link md-tabs__link--active">
         Sommelier Drive
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../glibc/blog/" class="md-tabs__link">
+        Sommelier glibc
       </a>
     </li>
   
@@ -535,6 +551,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#author-sora-suegami" class="md-nav__link">
+    Author: Sora Suegami
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-nav__link">
     Permission hash for the optimization of the ls operation.
   </a>
@@ -676,12 +699,74 @@
       
       
         <label class="md-nav__link" for="__nav_4">
+          Sommelier glibc
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sommelier glibc" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Sommelier glibc
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glibc/blog/" class="md-nav__link">
+        A user level file system for Sommelier Drive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../glibc/blog-ja/" class="md-nav__link">
+        glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_5" type="checkbox" id="__nav_5" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_5">
           Developer's Blog
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Developer's Blog" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_5">
           <span class="md-nav__icon md-icon"></span>
           Developer's Blog
         </label>
@@ -695,6 +780,20 @@
     <li class="md-nav__item">
       <a href="../../../blog/pkse/" class="md-nav__link">
         How we implemented expressive search criteria with minimum effort.
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../blog/db_speed_up/" class="md-nav__link">
+        Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
       </a>
     </li>
   
@@ -732,6 +831,13 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#author-sora-suegami" class="md-nav__link">
+    Author: Sora Suegami
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#permission-hash-for-the-optimization-of-the-ls-operation" class="md-nav__link">
     Permission hash for the optimization of the ls operation.
   </a>
@@ -767,6 +873,7 @@
 
   <h1>New Concepts</h1>
 
+<h4 id="author-sora-suegami">Author: Sora Suegami</h4>
 <p>Here, we describe new concepts of Sommelier Drive and how they optimize the processes of the data provider and the remote server.</p>
 <h2 id="permission-hash-for-the-optimization-of-the-ls-operation">Permission hash for the optimization of the ls operation.</h2>
 <p>First, we introduce a permission hash. This is a hash value calculated from the ID of a legitimate user having read permission and the file path of the parent directory. The data provider, in addition to the file path encryption, stores the permission hash on the remote server. When the user wishes to perform the <code>ls</code> operation, that is to say, retrieve the children file paths of a directory, the user provides the remote server with the permission hash corresponding to that directory file path instead of the trapdoor. The remote server returns the file path encryptions whose corresponding permission hash is equal to the provided one. In this way, the permission hash can optimize the ls operation on the remote server.</p>

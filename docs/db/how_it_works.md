@@ -1,3 +1,5 @@
+#### Author: Takaki Hamada
+
 ## how to add original function like `test_cipher`
 
 In the SQLite3 implementations, it converts input SQL query into bytecode.

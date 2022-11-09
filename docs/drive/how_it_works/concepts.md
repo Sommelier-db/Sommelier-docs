@@ -1,3 +1,5 @@
+#### Author: Sora Suegami
+
 Here, we describe new concepts of Sommelier Drive and how they optimize the processes of the data provider and the remote server.
 
 ## Permission hash for the optimization of the ls operation.

@@ -1,3 +1,5 @@
+#### Author: Sora Suegami
+
 ## Today's databases lack security.
 Databases (DBs) play a significant role in today's Internet-based services. 
 For example, online search services manage the data to be searched in a DB, which can be retrieved efficiently according to the user's request.

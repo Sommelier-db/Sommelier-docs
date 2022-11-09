@@ -40,6 +40,9 @@ nav:
     - APIs:
       - Server REST APIs: "drive/apis/server_apis.md"
       - Client APIs: "drive/apis/client_apis.md"
+  - Sommelier glibc:
+    - A user level file system for Sommelier Drive: "glibc/blog.md"
+    - "glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]": "glibc/blog-ja.md"
   - Developer's Blog:
     - How we implemented expressive search criteria with minimum effort.: "blog/pkse.md"
     - Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION: "blog/db_speed_up.md"
