@@ -15,7 +15,7 @@ The `test_cipher` function's specification is described in [APIs](https://sommel
 
 ## Use Sommelier DB C API
 
-Sommelier DB is based on SQLite3 C API source code.
+Sommelier DB is based on [SQLite3 C API source code](https://github.com/sqlite/sqlite).
 If you want to control Sommelier DB by source code of C, you can access Sommelier DB C API in the same way as SQLite3 C API.
 In particular, you should do the following tasks.
 

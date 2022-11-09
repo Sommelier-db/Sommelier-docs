@@ -1,7 +1,7 @@
 ## how to add original function like `test_cipher`
 
 In the SQLite3 implementations, it converts input SQL query into bytecode.
-And, SQLite3 executes compiled byteode on VDBE (Vertual DataBase Engine), that is vertual machine manipulates table row data on B-Tree.
+And, SQLite3 executes compiled byteode on [VDBE (Vertual DataBase Engine)](https://www.sqlite.org/opcode.html), that is vertual machine manipulates table row data on B-Tree.
 By this vertual machine, the function calling query is processed as `Function Opecode`.
 
 There are a function `sqlite3RegisterBuiltinFunction` and a macro `TEST_FUNC`, which are used to define the `Function Opecode` (e.g. length, max, min...).
