@@ -300,6 +300,8 @@ $ sommelier-run nano sommelier:/alice/file3
 ```
 
 ファイルの編集は滞りなくできるものの、Ctrl-Sで変更を保存するのにはかなり時間を要する。
+<img width="50%" src="../assets/figs/nano.png">
+
 ``` shell
 $ sommelier-run cat sommelier:/alice/file3
 nano opened
