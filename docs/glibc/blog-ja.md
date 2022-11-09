@@ -86,7 +86,9 @@ close(3)                                                    = 0
 - searchDescendantPathes
 ディレクトリを指定して子孫の一覧を取得する
 
-これらのAPIを用いて実装できる範囲で、以下に実際に変更を加えたglibcの関数を以下に示す。
+これらのAPIを用いて実装できる範囲で、glibcの関数をフックする。ただしこれらのAPIは現段階ではかなり時間がかかるので、呼び出しを極力減らす実装にする必要があった。
+
+以下に変更を加えた`sysdeps/unix/sysv/linux/`の関数を示す。
 
 - ### open/openat
 フックの大部分を構成するシステムコール関数。上に述べたとおり、引数であるファイルのパスとフラグを判定して、パス名がドライブのものであった場合は、フラグの組み合わせに応じてドライブ上のパスに対して特定の処理を行うように設計した。またopenatは第一引数にディレクトリの識別子を指定するが、これがドライブ上のものである場合も、特別な処理が必要になる。今回fopenやcreatなどで使用されるO_RDONLY,　O_WRONLY,　O_RDWR, O_CREAT, O_EXCL, O_TRUNC, O_APPEND, O_DIRECTORYの8つのフラグに対応した。
@@ -134,7 +136,7 @@ collect2: error: ld returned 1 exit status
 2つ目の問題として、libc.soをLD_PRELOADに指定してコマンドを実行した際に、Segmentation Faultで落ちてしまうというものがあった。gdbで調べたところ、共有ライブラリをロードする際にアクセス違反が生じていた。同様のエラーが発生した例を探したところ、[CTFの記事](https://qiita.com/kusano_k/items/ab35d5982011eb0f742e#%E8%BF%BD%E8%A8%98 "libc.soを差し替えてプログラムを動かす（のは無理そう）")が見つかり、これによるとlibc.soはld-linux.soの構造体を参照しているが、このメンバの配置がバージョンごとに異なるため、実際に動いているld-linux.soとバージョンを合わせる必要があるという。そのため、glibcのバージョンを実機のものに揃えて再ビルドして、preloadしたところ問題なく関数のフックが成功した。この制約は非常に問題なので、フックに必要な関数の依存を調べ部分的にリンクして、動的リンカを必要としないライブラリを制作しようとしたが、ビルド関連の設定が複雑であったので、ひとまずglibcバージョンを揃えたVMなどの環境で動かすことで対応した。
 
 ## 挙動のテスト
-※ 実機で行うと思わぬバグを生じる可能性があるため以下の環境を構築したVM上で行う。
+**※ 実機で行うと思わぬバグを生じる可能性があるため以下の環境を構築したVM上で行う。**
 
 ### 環境
 - OS: Linux (Debian系)
@@ -218,7 +220,7 @@ export SOMMELIER_DRIVE_HOME_DIR=/alice
 
 ### コマンドの実行
 コマンドを実行するラッパーとなる`sommelier-run`は以下のようなスクリプトである。
-``` sh:/usr/bin/sommelier-run
+``` sh
 #!/bin/sh
 # directory on which files on the remote drive are put
 export SOMMELIER_DRIVE_BASE_DIR=/tmp/drive
@@ -300,7 +302,7 @@ $ sommelier-run nano sommelier:/alice/file3
 ```
 
 ファイルの編集は滞りなくできるものの、Ctrl-Sで変更を保存するのにはかなり時間を要する。
-<img width="50%" src="../assets/figs/nano.png">
+<img width="80%" src="../../assets/figs/nano.png">
 
 ``` shell
 $ sommelier-run cat sommelier:/alice/file3
