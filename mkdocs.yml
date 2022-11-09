@@ -41,7 +41,7 @@ nav:
       - Server REST APIs: "drive/apis/server_apis.md"
       - Client APIs: "drive/apis/client_apis.md"
   - Developer's Blog:
-    - Public key searchable encryption: "blog/pkse.md"
+    - How we implemented expressive search criteria with minimum effort.: "blog/pkse.md"
 markdown_extensions:
   - pymdownx.highlight:
       linenums: true

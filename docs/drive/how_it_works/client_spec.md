@@ -1,4 +1,4 @@
-A client of Sommelier Drive can manage files on the remote server in a similar manner to Unix file systems. While our current implementation provides two types of client CLI, both of them perform each operation in the background as below.
+A client of Sommelier Drive can manage files on the remote server in a similar manner to Unix file systems. It performs each operation in the background as below.
 
 ## User registration
 1. A client generates new pairs of private and public keys of the PKE and PKSE schemes, `dataPK` and `keywordPK`.
