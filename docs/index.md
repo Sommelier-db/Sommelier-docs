@@ -26,3 +26,6 @@ Its detailed specifications are available [here](./drive/intro.md).
 - [Client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-client)
 - [Glibc client implementation of Sommelier Drive](https://github.com/Sommelier-db/sommelier-drive-glibc/tree/drive)
 - [PKSE implementation written in Rust](https://github.com/Sommelier-db/rust-searchable-pke)
+
+## Acknowledgments
+The logo illustration of Sommelier DB was provided by Kirari, Suegami in 2022.
