@@ -78,18 +78,25 @@ close(3)                                                    = 0
 
 今回Sommelier Driveから提供されるAPIは以下である。
 
+
 - addFile
 パス名を指定してファイルを作成する
+
 - addDirectory
 パス名を指定してディレクトリを作成する
+
 - getChildrenPathes
 ディレクトリを指定して、エントリ一覧を取得する
+
 - isExistFilepath
 パスの有無を取得する
+
 - modifyFile
 ファイルの内容を変更する
+
 - openFilepath
 パスを開きパーミッションやファイルの内容を取得する。
+
 - searchDescendantPathes
 ディレクトリを指定して子孫の一覧を取得する
 
