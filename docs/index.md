@@ -28,4 +28,4 @@ Its detailed specifications are available [here](./drive/intro.md).
 - [PKSE implementation written in Rust](https://github.com/Sommelier-db/rust-searchable-pke)
 
 ## Acknowledgments
-The logo illustration of Sommelier DB was provided by Kirari, Suegami in 2022.
+The logo illustration for Sommelier DB was provided by Kirari Suegami in 2022.
