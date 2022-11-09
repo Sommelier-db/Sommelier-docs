@@ -22,17 +22,20 @@ Dynamic section at offset 0xf8058 contains 29 entries:
  ~~~~~~~~~~~
 ```
 実際にltraceを使用したり、gdbでブレークポイントを貼るなどして調べると、ファイルの操作にはlibc.soのopen/close/read/writeといった関数が呼ばれ、ヒープからメモリの割り当てと解放には最終的にmalloc/free関数が呼ばれる。他にもPython,Rubyといったインタプリタ言語もCで書かれていることから同様にlibcの関数を使用している。
+
 つまりlibcの挙動そのものを変えればプログラムの挙動を変えることができると考え、ファイルシステムを自作するよりは手をつけやすいと感じ、このような試みに至った。しかしアセンブリで書かれたプログラムやGoなど独自の標準ライブラリを実装している言語で書かれたプログラムなどにはこの手法は使えない。
 
 ## 挙動の変更方法について
-glibcに変更を加えて独自のlibc.soを作成したとして、既存の実行ファイルのリンク先を変更するには、再度リンクするかシステム内のlibc.soを置き換える必要がある。しかし、ソースコードが必ずしも存在するとは限らないし、システムにはなるべく変更を加えたくない。そこで関数のフックという手法を用いることにした。今回使用したのは**LD_PRELOAD**という環境変数で、共有ライブラリを指定すると、実行開始時に動的リンカが指定したライブラリを、実行ファイルで指定されたライブラリより先にメモリにロードするというものである。命令の実行時に共有ライブラリの関数が初めて呼ばれたときに動的リンカに処理が移り、関数を探索してアドレスを解決するという流れがあるが、その時の関数の探索の順番をこのLD_PRELOADにライブラリを指定することで、前に持ってくることができる。つまりLD_PRELOADに本来呼ばれるはずの共有ライブラリの関数を実装したライブラリを指定すると、関数の処理を横取りできることになる(関数を**フック**するという)。この手法を用いて既存のコマンドを書き換えずにlibc.soのファイルを扱う関数の挙動を変更することができる。
-　ただし問題はlibc.so内の関数を新たに定義して作成したライブラリをpreloadするだけでは、その関数を呼び出すlibc.so内の関数をフックすることはできない。例えば、write関数を定義したライブラリをpreloadしても、libc.soのfwrite関数が実際に呼び出すのは自身のwrite関数であってフックしたwrite関数ではない。これは同じライブラリにある関数のアドレスは相対的なものなので、わざわざ動的リンカを呼ぶことはないからである。ただファイルをオープンする処理をフックするために、creatやfopenといったすべての関数の処理を一つ一つ定義するのは労力を要するうえ見逃す可能性もある。そこで今回とった方針はglibc全体のソースを持ち出して、フックしたい関数が最終的に行き着く関数(例えばfopenに対してopen)のみを変更してpreloadするライブラリを作成するというもので、かなり無駄があるがlibc.soの関数はすべて揃うのでフックをしそこなう心配はなくなる。
+glibcに変更を加えて独自のlibc.soを作成したとして、既存の実行ファイルのリンク先を変更するには、再度リンクするかシステム内のlibc.soを置き換える必要がある。しかし、ソースコードが必ずしも存在するとは限らないし、システムにはなるべく変更を加えたくない。そこで関数のフックという手法を用いることにした。今回使用したのは **LD_PRELOAD** という環境変数で、共有ライブラリを指定すると、実行開始時に動的リンカが指定したライブラリを、実行ファイルで指定されたライブラリより先にメモリにロードするというものである。命令の実行時に共有ライブラリの関数が初めて呼ばれたときに動的リンカに処理が移り、関数を探索してアドレスを解決するという流れがあるが、その時の関数の探索の順番をこのLD_PRELOADにライブラリを指定することで、前に持ってくることができる。つまりLD_PRELOADに本来呼ばれるはずの共有ライブラリの関数を実装したライブラリを指定すると、関数の処理を横取りできることになる(関数を **フック** するという)。この手法を用いて既存のコマンドを書き換えずにlibc.soのファイルを扱う関数の挙動を変更することができる。
+
+ただし問題はlibc.so内の関数を新たに定義して作成したライブラリをpreloadするだけでは、その関数を呼び出すlibc.so内の関数をフックすることはできない。例えば、write関数を定義したライブラリをpreloadしても、libc.soのfwrite関数が実際に呼び出すのは自身のwrite関数であってフックしたwrite関数ではない。これは同じライブラリにある関数のアドレスは相対的なものなので、わざわざ動的リンカを呼ぶことはないからである。ただファイルをオープンする処理をフックするために、creatやfopenといったすべての関数の処理を一つ一つ定義するのは労力を要するうえ見逃す可能性もある。そこで今回とった方針はglibc全体のソースを持ち出して、フックしたい関数が最終的に行き着く関数(例えばfopenに対してopen)のみを変更してpreloadするライブラリを作成するというもので、かなり無駄があるがlibc.soの関数はすべて揃うのでフックをしそこなう心配はなくなる。
 
 
 ## 具体的な設計の方針
 基本的にはファイルシステムを扱うシステムコールを呼び出す関数(正式ではないがここではシステムコール関数という。実際にソース内ではこれらの関数はマクロを用いてシステムコールを呼び出す)を書き換えればいいことになる。Linuxではこれらの関数はglibcソースコード内の`sysdeps/unix/sysv/linux/` 以下にまとまっている。
 
 実際にどの関数をフックする必要があるかは、簡単なコマンドをltraceやstraceでトレースしながら判定する。例えば以下は一つのファイルに対するcatをltraceした結果である。
+
 ``` shell
 $ ltrace cat file 
 ################ 必要な部分のみ抜粋
@@ -47,8 +50,10 @@ free(0x7f4474462000)                                           = <void>
 close(3)                                                       = 0
 ################
 ```
+
 まずfileをread onlyでopenし、返って来たファイル識別子に対して、fstat,readを実行して、最後にcloseする。この場合、リモートのファイルをread権限でopenする際はファイルの内容をDriveのAPIを利用してリモートから取得してローカルのファイルシステムに移しそのファイル識別子を返せば良い。その後のreadはこのローカルのファイルに対して行うので、フックの必要はない。
 他の例として、cpのltraceの結果を示す。
+
 ``` shell
 $ ltrace cp file dup
 #################### 必要な部分のみ抜粋
@@ -68,9 +73,11 @@ close(4)                                                    = 0
 close(3)                                                    = 0
 ####################
 ```
+
 まずコピー先のパスがファイルかディレクトリか存在するかどうかをopenで判定し、ファイルである場合はwrite権限でそのファイルを開く。その後内容をコピーしてcloseする。この場合、write権限でドライブ上のパスを指定してopenした場合、ファイルがドライブ上になければ作成し、ローカルのファイルとして開く。更にこのファイルをcloseするときは、変更をドライブに保存するように変更する必要がある。
 
 今回Sommelier Driveから提供されるAPIは以下である。
+
 - addFile
 パス名を指定してファイルを作成する
 - addDirectory
@@ -108,6 +115,7 @@ fsyncはファイルの変更をディスクに反映するシステムコール
 
 ## ビルドの方法と問題点
 深刻な問題だがmakeによるビルドが失敗する。本来のビルドは単純にビルドディレクトリに移動して`<source path>/configure`と`make` で済むのはずだが、実装に変更を加えたためにこのビルド方法では以下のようなエラーにより止まってしまう。
+
 ```
 for symbol in __GI___pthread_disable_asynccancel __GI___pthread_enable_asynccancel __pthread_disable_asynccancel __pthread_enable_asynccancel calloc free malloc realloc  __stack_chk_fail __stack_chk_fail_local; do \
         echo ".globl $symbol"; \
@@ -126,7 +134,9 @@ gcc   -nostdlib -nostartfiles -r -o /home/sitianos/Project/Drive/build/elf/librt
 /home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:225: multiple definition of `_dl_catch_error'; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:225: first defined here
 collect2: error: ld returned 1 exit status
 ```
+
 表示にあるように関数の多重定義によるエラーであるが、指摘されている関数は実装を変更したファイル内では用いてない。実際にlibc_pic.aとdl-allobjs.os内のシンボルを確認したところ、確かに同じ関数が定義されているが、ファイルに変更を加えることで、そのような状況になる理由がわからなかった。その上同じ定義を指してのエラーであることから -fcommonオプションを加えたが解消しなかった。このレシピは動的リンカld.soを作成する一環であるが、目的のlibc.soを作成するにはld.soへのリンクが必要であるため、これ以降ビルドは進まない。ld.soを作成する一連のビルド関連ファイルを読んでみたものの、原因の特定には至らなかった。現段階ではかなり強引であるものの以下の方法でビルドできる。
+
 1. `sysdeps/unix/sysv/linux/drive-common.h`の`DRIVE_EXT`マクロを0にセットして、`configure`と`make`でビルドする。
 2. `sysdeps/unix/sysv/linux/drive-common.h`の`DRIVE_EXT`マクロを1にセットして、`make -k`を実行する。
 
@@ -145,6 +155,7 @@ collect2: error: ld returned 1 exit status
 
 ### インストール
 システムのglibcのバージョンを確認する
+
 ``` shell
 $ /usr/lib/x86_64-linux-gnu/libc.so.6
 GNU C Library (Debian GLIBC 2.35-3) stable release version 2.35.
@@ -157,7 +168,9 @@ libc ABIs: UNIQUE IFUNC ABSOLUTE
 For bug reporting instructions, please see:
 <http://www.debian.org/Bugs/>.
 ```
+
 debパッケージは以下のような構成になっている
+
 ``` shell
 $ dpkg-deb -c sommelier-drive-glibc_1.1_amd64.deb
 drwxr-xr-x root/root         0 2022-11-09 04:38 ./
@@ -172,13 +185,16 @@ drwxr-xr-x root/root         0 2022-11-09 06:42 ./usr/lib/x86_64-linux-gnu/
 -rwxr-xr-x root/root  10318664 2022-11-09 04:47 ./usr/lib/x86_64-linux-gnu/libsommelier_drive_client.so
 -rwxr-xr-x root/root  12711832 2022-11-09 06:32 ./usr/lib/x86_64-linux-gnu/libsommelier_libc.so
 ```
+
 インストールを実行する
+
 ```
 sudo dpkg -i sommelier-drive-glibc_1.1_amd64.deb
 ```
 
 ### ユーザーの登録
 立ち上げたドライブのサーバに対して、urlとリージョン名とホームディレクトリのパスを指定してユーザを登録すると、以下のようなファイルが生成される。
+
 ``` shell
 $ sommelier-register "http://localhost:8000/api" "region" "/alice"
 successfully registered. user id is 1
@@ -216,10 +232,12 @@ export SOMMELIER_DRIVE_REGION_NAME=region
 # remote home directory
 export SOMMELIER_DRIVE_HOME_DIR=/alice
 ```
+
 このファイルにドライブへの接続に必要なサーバの情報と、2種類の秘密鍵を含んだクライアントの情報を環境変数に設定する記述がなされている。
 
 ### コマンドの実行
 コマンドを実行するラッパーとなる`sommelier-run`は以下のようなスクリプトである。
+
 ``` sh
 #!/bin/sh
 # directory on which files on the remote drive are put
@@ -251,19 +269,24 @@ export LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libsommelier_libc.so
 # execute privided command
 exec $@
 ```
+
 これに示す通り、ユーザ登録時に作成した設定ファイルと、Sommelier DriveのAPIを保持するライブラリを環境変数に指定し、LD_PRELOADに作成した関数フックのためのlibcライブラリを指定して与えられたコマンドを実行する。
 このスクリプトを用いて、ファイルを扱うコマンドを以下のように実行してドライブ上のファイルを操作する。
+
 ``` shell
 $ sommelier-run command [args]
 ```
-実際に動作する標準コマンドをいくつか紹介する。
-まずファイルとディレクトリを作成する。ドライブ上のパスは先頭に"sommelier:"をつけて指定する。
+
+実際に動作する標準コマンドをいくつか紹介する。まずファイルとディレクトリを作成する。ドライブ上のパスは先頭に"sommelier:"をつけて指定する。
+
 ``` shell
 $ sommelier-run touch sommelier:/alice/file1
 
 $ sommelier-run mkdir sommelier:/alice/dir1
 ```
+
 これで実際にドライブ上にファイルとディレクトリが作成された。cpコマンドにより、ローカル-リモート間、リモート-リモート間でファイルを複製できることも確認する。
+
 ``` shell
 $ echo "this is a local file" > localfile
 
@@ -284,6 +307,7 @@ this is a local file
 ```
 
 次にlsコマンドによりリモートに作成したファイルとディレクトリを確認する。
+
 ``` shell
 $ sommelier-run ls -l sommelier:/alice/
 total 0
@@ -291,12 +315,15 @@ drw------- 0 alice alice  0 Jan  1  1970 dir1
 -rw------- 0 alice alice  0 Jan  1  1970 file1
 -rw------- 0 alice alice 21 Jan  1  1970 file2
 ```
+
 ドライブの設計の都合でstatの返り値に空白が多いため、情報の表示がはいい加減であるが、エントリの表示ができていることは確認できる。
 
 ``` shell
 $ sommelier-run nano sommelier:/alice/file3
 ```
+
 最後にnanoエディタを試す。
+
 ``` shell
 $ sommelier-run nano sommelier:/alice/file3
 ```
