@@ -7,6 +7,8 @@
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
       
+        <meta name="author" content="Sora Suegami">
+      
       
         <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/blog/pkse/">
       
@@ -15,7 +17,7 @@
     
     
       
-        <title>Public key searchable encryption - Sommelier DB Docs</title>
+        <title>How we implemented expressive search criteria with minimum effort. - Sommelier DB Docs</title>
       
     
     
@@ -79,6 +81,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#prefix-search" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -107,7 +114,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Public key searchable encryption
+              How we implemented expressive search criteria with minimum effort.
             
           </span>
         </div>
@@ -649,9 +656,52 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          How we implemented expressive search criteria with minimum effort.
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
-        Public key searchable encryption
+        How we implemented expressive search criteria with minimum effort.
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prefix-search" class="md-nav__link">
+    Prefix search
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#range-search" class="md-nav__link">
+    Range search
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    Reference
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -682,6 +732,35 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#prefix-search" class="md-nav__link">
+    Prefix search
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#range-search" class="md-nav__link">
+    Range search
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reference" class="md-nav__link">
+    Reference
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -700,9 +779,42 @@
   </a>
 
 
-  <h1>Public key searchable encryption</h1>
+  <h1>How we implemented expressive search criteria with minimum effort.</h1>
 
-
+<p>In this post, I describe how we implemented <a href="https://github.com/Sommelier-db/rust-searchable-pke">our new library of PKSE</a>. As described in its README.md, our library provides Public-key encryption with conjunctive and disjunctive keyword search (PECDK) [1] as an underlying scheme. The PECDK supports conjunction and disjunction of multiple keywords as search criteria, which is rather expressive in the research field of public-key searchable encryption (PKSE). However, to provide the same level of functionality as SQL, more complex search criteria need to be addressed. <strong>We filled this gap without implementing new PKSE schemes by devising how to construct the keywords to be encrypted in the PECDK scheme.</strong></p>
+<p>Specifically, our library supports <strong>prefix</strong> and <strong>range</strong> search. The former encrypts a string and retrieves the encryption whose string has the specified prefix, and the latter encrypts an unsigned integer and retrieves the encryption whose integer is within the specified range. In the following, I explain those background designs and implementations.</p>
+<h2 id="prefix-search">Prefix search</h2>
+<p>In the prefix search, a string is decomposed into bytes, and a pair of each byte and its index forms a single keyword. For example, a string <code>"abcde"</code> will be keywords <code>[(0,"a"), (1, "b"), (2,"c"), (3,"d"), (4, "e")]</code>. In our library, this keyword construction is implemented in Rust as below.
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span></pre></div></td><td class="code"><div><pre><span></span><code>let mut keywords = bytes
+        .into_iter()
+        .enumerate()
+        .map(|(idx, byte)| {
+            concat_multi_bytes(vec![
+                region_name.as_bytes(),
+                &amp;idx.to_be_bytes(),
+                &amp;vec![1u8, *byte],
+            ])
+        })
+        .collect::&lt;Vec&lt;Vec&lt;u8&gt;&gt;&gt;();
+</code></pre></div></td></tr></table></div>
+The variable <code>idx</code> and <code>byte</code> represent the index and the byte, respectively. The <code>region_name</code> is a fixed, application-specific string used to distinguish the same string encrypted for different applications. The byte <code>1</code> is also necessary to distinguish an empty keyword, namely all-zero bytes. The function <code>concat_multi_bytes</code> concats all of the given bytes. In this way, with minor exceptions, our implementation is consistent with the above description.</p>
+<p>A trapdoor for the prefix search is for a conjunction of keywords derived from a prefix string. For instance, the trapdoor for the prefix <code>"abc"</code> corresponds to the conjunction of keywords <code>[(0,"a"), (1, "b"), (2,"c")]</code>. Since the keywords of the string with that prefix should include the same keywords, the trapdoor can match the appropriate string encryptions with the PECDK scheme.</p>
+<h2 id="range-search">Range search</h2>
+<h2 id="reference">Reference</h2>
+<ol>
+<li>Zhang, Y., Li, Y., &amp; Wang, Y. (2019). Secure and efficient searchable public key encryption for resource constrained environment based on pairings under prime order group. Security and Communication Networks, 2019.</li>
+<li>Faber, S., Jarecki, S., Krawczyk, H., Nguyen, Q., Rosu, M., &amp; Steiner, M. (2015, September). Rich queries on encrypted data: Beyond exact matches. In European symposium on research in computer security (pp. 123-145). Springer, Cham.</li>
+</ol>
 
 
   

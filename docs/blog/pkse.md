@@ -1,6 +1,6 @@
 Author: Sora Suegami
 
-In this post, I describe how we implemented [our new library of PKSE](https://github.com/Sommelier-db/rust-searchable-pke). As described in its README.md, our library provides Public-key Encryption with Conjunctive and Disjunctive Keyword search (PECDK) [1] as an underlying scheme. The PECDK supports conjunction and disjunction of multiple keywords as search criteria, which is rather expressive in the research field of public-key searchable encryption (PKSE). However, to provide the same level of functionality as SQL, more complex search criteria need to be addressed. **We filled this gap without implementing new PKSE schemes by devising how to construct the keywords to be encrypted in the PECDK scheme.**
+In this post, I describe how we implemented [our new library of PKSE](https://github.com/Sommelier-db/rust-searchable-pke). As described in its README.md, our library provides Public-key encryption with conjunctive and disjunctive keyword search (PECDK) [1] as an underlying scheme. The PECDK supports conjunction and disjunction of multiple keywords as search criteria, which is rather expressive in the research field of public-key searchable encryption (PKSE). However, to provide the same level of functionality as SQL, more complex search criteria need to be addressed. **We filled this gap without implementing new PKSE schemes by devising how to construct the keywords to be encrypted in the PECDK scheme.**
 
 Specifically, our library supports **prefix** and **range** search. The former encrypts a string and retrieves the encryption whose string has the specified prefix, and the latter encrypts an unsigned integer and retrieves the encryption whose integer is within the specified range. In the following, I explain those background designs and implementations.
 
@@ -21,7 +21,7 @@ let mut keywords = bytes
 ```
 The variable `idx` and `byte` represent the index and the byte, respectively. The `region_name` is a fixed, application-specific string used to distinguish the same string encrypted for different applications. The byte `1` is also necessary to distinguish an empty keyword, namely all-zero bytes. The function `concat_multi_bytes` concats all of the given bytes. In this way, with minor exceptions, our implementation is consistent with the above description.
 
-
+A trapdoor for the prefix search is for a conjunction of keywords derived from a prefix string. For instance, the trapdoor for the prefix `"abc"` corresponds to the conjunction of keywords `[(0,"a"), (1, "b"), (2,"c")]`. Since the keywords of the string with that prefix should include the same keywords, the trapdoor can match the appropriate string encryptions with the PECDK scheme.
 
 ## Range search
 

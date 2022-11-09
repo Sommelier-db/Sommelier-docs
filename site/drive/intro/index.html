@@ -685,7 +685,7 @@
   
     <li class="md-nav__item">
       <a href="../../blog/pkse/" class="md-nav__link">
-        Public key searchable encryption
+        How we implemented expressive search criteria with minimum effort.
       </a>
     </li>
   
@@ -757,7 +757,7 @@
 <ol>
 <li>The data provider encrypts the file contents and paths with the user's public key and stores their encryptions on the remote server.</li>
 <li>The user generates a trapdoor of the PKSE scheme with the user's private key and provides it for the remote server.</li>
-<li>The remote server returns the file contents encryption of which the corresponding file path encryption matches with the provided trapdoor.</li>
+<li>The remote server returns the file contents encryption of which the corresponding file path encryption matches the provided trapdoor.</li>
 <li>The user decrypts the returned encryption with the user's private key, which results in the file contents.</li>
 </ol>
 <p>The above scheme may seem almost the same as the Sommelier DB. The difference is that the user's private and public keys consist of those of PKSE and public-key encryption (PKE). The PKSE scheme is used to allow the server to search for files in the requested file path without revealing them. In addition, the PKE scheme is necessary to obtain the file contents because only with the PKSE scheme the user cannot obtain the unknown message from the ciphertext, even if the PKSE private key is available. In other words, Sommelier Drive requires the PKSE and PKE scheme to test and recover the file path and contents, respectively.</p>

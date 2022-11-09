@@ -47,7 +47,7 @@ A client with the `userId` will retrieve the children file paths under the `file
 ## Descendant file paths retrieve (find)
 A client with the `userId` will retrieve the descendant file paths under the `filePath` as below.
 
-1. The client generates a trapdoor with the PKSE private key for strings with `filePath` as prefix and requests the records in the Path table where a value of KeywordCT column matches with the trapdoor.
+1. The client generates a trapdoor with the PKSE private key for strings with `filePath` as prefix and requests the records in the Path table where a value of KeywordCT column matches the trapdoor.
 1. The remote server returns the requested records in the Path table.
 1. For each returned record, the client decrypts its `dataCT`. These recovered file paths are the descendant file paths under the `filePath`.
 

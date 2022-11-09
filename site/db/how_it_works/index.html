@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#how-to-add-original-function-like-test_cipher" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -389,9 +394,38 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          How it works
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         How it works
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-add-original-function-like-test_cipher" class="md-nav__link">
+    how to add original function like test_cipher
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -651,7 +685,7 @@
   
     <li class="md-nav__item">
       <a href="../../blog/pkse/" class="md-nav__link">
-        Public key searchable encryption
+        How we implemented expressive search criteria with minimum effort.
       </a>
     </li>
   
@@ -682,6 +716,21 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-add-original-function-like-test_cipher" class="md-nav__link">
+    how to add original function like test_cipher
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -702,7 +751,13 @@
 
   <h1>How it works</h1>
 
-
+<h2 id="how-to-add-original-function-like-test_cipher">how to add original function like <code>test_cipher</code></h2>
+<p>In the SQLite3 implementations, it converts input SQL query into bytecode.
+And, SQLite3 executes compiled byteode on <a href="https://www.sqlite.org/opcode.html">VDBE (Vertual DataBase Engine)</a>, that is vertual machine manipulates table row data on B-Tree.
+By this vertual machine, the function calling query is processed as <code>Function Opecode</code>.</p>
+<p>There are a function <code>sqlite3RegisterBuiltinFunction</code> and a macro <code>TEST_FUNC</code>, which are used to define the <code>Function Opecode</code> (e.g. length, max, min...).
+To realize PKSE searching function, we defined the operation of <code>test_cipher</code> and called <code>TEST_FUNC</code> in <code>sqlite3RegisterBuiltinFunction</code>.</p>
+<p>Our <code>test_cipher</code> implementation is <a href="https://github.com/Sommelier-db/sommelier-db/blob/99def25b95f876a9efd82c85e1a7ac57007c6a5f/src/func.c#L2329">here</a>.</p>
 
 
   

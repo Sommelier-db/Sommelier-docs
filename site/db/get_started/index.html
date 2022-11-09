@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#install-sommelier-db" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -375,9 +380,52 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Get Started
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         Get Started
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-sommelier-db" class="md-nav__link">
+    Install Sommelier DB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-sommelier-db-cui-client" class="md-nav__link">
+    Use Sommelier DB CUI client
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-sommelier-db-c-api" class="md-nav__link">
+    Use Sommelier DB C API
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -651,7 +699,7 @@
   
     <li class="md-nav__item">
       <a href="../../blog/pkse/" class="md-nav__link">
-        Public key searchable encryption
+        How we implemented expressive search criteria with minimum effort.
       </a>
     </li>
   
@@ -682,6 +730,35 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#install-sommelier-db" class="md-nav__link">
+    Install Sommelier DB
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-sommelier-db-cui-client" class="md-nav__link">
+    Use Sommelier DB CUI client
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#use-sommelier-db-c-api" class="md-nav__link">
+    Use Sommelier DB C API
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -702,7 +779,25 @@
 
   <h1>Get Started</h1>
 
+<h2 id="install-sommelier-db">Install Sommelier DB</h2>
+<!-- Sommelier DB のリポジトリへ誘導するようにした -->
 
+<p>The installing scripts of Sommelier DB is constructed by <code>configure</code> and <code>make</code>.
+Detail installing method is described at <a href="https://github.com/Sommelier-db/sommelier-db">README of Sommelier DB</a>.</p>
+<h2 id="use-sommelier-db-cui-client">Use Sommelier DB CUI client</h2>
+<p>When you execute your installed binary path, you can access the CLI SQLite Interface.
+In this interface, you can use SQLite's DBMS functions and Sommelier DB's original SQL function <code>test_cipher</code>.</p>
+<p>The <code>test_cipher</code> function's specification is described in <a href="https://sommelier-db.github.io/Sommelier-docs/db/apis/">APIs</a> page.</p>
+<h2 id="use-sommelier-db-c-api">Use Sommelier DB C API</h2>
+<p>Sommelier DB is based on <a href="https://github.com/sqlite/sqlite">SQLite3 C API source code</a>.
+If you want to control Sommelier DB by source code of C, you can access Sommelier DB C API in the same way as SQLite3 C API.
+In particular, you should do the following tasks.</p>
+<ol>
+<li>Install Sommelier DB in the way descirbed above.</li>
+<li>Add <code>#include "#sommelier-db.h"</code> in your header file. (you will be able to use <code>sqlite*</code> interface and SQL function <code>test_cipher</code>, that is used searching data by PKSE)</li>
+<li>Add compile options: <code>-I&lt;/path/to/sommelier-db/include&gt; -L&lt;/path/to/sommelier-db/lib&gt; -lsommelier-db</code>.</li>
+</ol>
+<p><a href="https://github.com/Sommelier-db/sommelier-drive-server">Sommelier Drive Server implementation</a> is one of examples to use "Sommelier DB C API" and to add "C compile options".</p>
 
 
   

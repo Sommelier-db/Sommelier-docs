@@ -79,6 +79,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#apis-detail" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -403,9 +408,59 @@
       
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          APIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="./" class="md-nav__link md-nav__link--active">
         APIs
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apis-detail" class="md-nav__link">
+    APIs detail.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apis-derived-from-sqlite3" class="md-nav__link">
+    APIs derived from SQLite3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commonly-used-api-of-sqlite3-sqlite3_exec" class="md-nav__link">
+    Commonly used API of SQLite3: sqlite3_exec
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sommelier-db-specific-sql-function-test_cipher" class="md-nav__link">
+    Sommelier DB Specific SQL function: test_cipher
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -651,7 +706,7 @@
   
     <li class="md-nav__item">
       <a href="../../blog/pkse/" class="md-nav__link">
-        Public key searchable encryption
+        How we implemented expressive search criteria with minimum effort.
       </a>
     </li>
   
@@ -682,6 +737,42 @@
   
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apis-detail" class="md-nav__link">
+    APIs detail.
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#apis-derived-from-sqlite3" class="md-nav__link">
+    APIs derived from SQLite3
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commonly-used-api-of-sqlite3-sqlite3_exec" class="md-nav__link">
+    Commonly used API of SQLite3: sqlite3_exec
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sommelier-db-specific-sql-function-test_cipher" class="md-nav__link">
+    Sommelier DB Specific SQL function: test_cipher
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -702,7 +793,31 @@
 
   <h1>APIs</h1>
 
+<h2 id="apis-detail">APIs detail.</h2>
+<p>Sommelier DB APIs are constructed from,</p>
+<ol>
+<li>APIs derived from SQLite3.</li>
+<li>Sommelier DB Specific SQL function: test_cipher</li>
+</ol>
+<p>These are described at following sections.</p>
+<h2 id="apis-derived-from-sqlite3">APIs derived from SQLite3</h2>
+<p>The SQLite3's API manual is <a href="https://www.sqlite.org/c3ref/intro.html">here</a>.
+When you want to process basic SQL queries, you should call the fucntions included this API. such as <code>sqlite3_exec</code>.</p>
+<p>At next section, it is explaining the APIs used in <a href="https://github.com/Sommelier-db/sommelier-drive-server/blob/develop/src/orm.c">Sommelier Drive Server Database Subroutine</a>.</p>
+<h2 id="commonly-used-api-of-sqlite3-sqlite3_exec">Commonly used API of SQLite3: sqlite3_exec</h2>
+<p>If you execute SQL queries in C source code, you can use <a href="https://www.sqlite.org/c3ref/exec.html"><code>sqlite3_exec</code> function</a>.</p>
+<p>This function recieves not only char pointer stored a SQL query, but also a callback function, which is processing a SQL result line by line, and a void pointer, which can be accessed from callback function.
+So, we can define arbitary processing routine for SQL execution result row.</p>
+<h2 id="sommelier-db-specific-sql-function-test_cipher">Sommelier DB Specific SQL function: test_cipher</h2>
+<p>When you search specific token with PKSE for the ciphertexts of SQL result, you call <code>test_cipher</code> SQL function in the SQL query.</p>
+<p>This SQL function recieves a ciphertext by PKSE and a trapdoor words, and it returns the integer 1 (This means searching result is True) or 0 (Result is False).
+For example as following SQL code block, you can call this function with SELECT statement, and you can get PKSE search results.</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="c1">-- `Table` is defined as `Table (id INT, name TEXT, cipher TEXT)`</span>
 
+<span class="k">SELECT</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="k">Table</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">test_cipher</span><span class="p">(</span><span class="n">cipher</span><span class="p">,</span><span class="w"> </span><span class="n">trapdoor</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
 
 
   
