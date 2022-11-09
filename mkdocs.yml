@@ -42,6 +42,7 @@ nav:
       - Client APIs: "drive/apis/client_apis.md"
   - Developer's Blog:
     - How we implemented expressive search criteria with minimum effort.: "blog/pkse.md"
+    - Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION: "blog/db_speed_up.md"
 markdown_extensions:
   - pymdownx.highlight:
       linenums: true
