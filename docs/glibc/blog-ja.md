@@ -156,7 +156,7 @@ collect2: error: ld returned 1 exit status
 2. `sysdeps/unix/sysv/linux/drive-common.h`の`DRIVE_EXT`マクロを1にセットして、`make -k`を実行する。
 
 1により変更を含めない通常通りのビルドを実行してlibc.soに必要なファイルが生成する。2ではld.so作成上のエラーを無視して、変更を加えた関数を含めたlibc.soを作成する。依存上で必要なファイルは1で作成されているので、ld.soの作成でエラーは出力されるものの、目的のlibc.soは生成される。
-このように強引なビルド方法なので、ビルド後のバイナリとしてdebパッケージを作成した。
+このように強引なビルド方法なので、ビルド後のバイナリとしてDebianパッケージを作成した。
 
 2つ目の問題として、libc.soをLD_PRELOADに指定してコマンドを実行した際に、Segmentation Faultで落ちてしまうというものがあった。gdbで調べたところ、共有ライブラリをロードする際にアクセス違反が生じていた。同様のエラーが発生した例を探したところ、[CTFの記事](https://qiita.com/kusano_k/items/ab35d5982011eb0f742e#%E8%BF%BD%E8%A8%98 "libc.soを差し替えてプログラムを動かす（のは無理そう）")が見つかり、これによるとlibc.soはld-linux.soの構造体を参照しているが、このメンバの配置がバージョンごとに異なるため、実際に動いているld-linux.soとバージョンを合わせる必要があるという。そのため、glibcのバージョンを実機のものに揃えて再ビルドして、preloadしたところ問題なく関数のフックが成功した。この制約は非常に問題なので、フックに必要な関数の依存を調べ部分的にリンクして、動的リンカを必要としないライブラリを制作しようとしたが、ビルド関連の設定が複雑であったので、ひとまずglibcバージョンを揃えたVMなどの環境で動かすことで対応した。
 
@@ -184,9 +184,11 @@ For bug reporting instructions, please see:
 <http://www.debian.org/Bugs/>.
 ```
 
-debパッケージは以下のような構成になっている
+Debianパッケージのダウンロードとインストールを実行する
 
 ``` shell
+$ curl -O https://github.com/Sommelier-db/sommelier-drive-glibc/raw/drive/sommelier-drive/sommelier-drive-glibc_1.1_amd64.deb
+
 $ dpkg-deb -c sommelier-drive-glibc_1.1_amd64.deb
 drwxr-xr-x root/root         0 2022-11-09 04:38 ./
 drwxr-xr-x root/root         0 2022-11-09 04:39 ./usr/
@@ -199,12 +201,8 @@ drwxr-xr-x root/root         0 2022-11-09 04:38 ./usr/lib/
 drwxr-xr-x root/root         0 2022-11-09 06:42 ./usr/lib/x86_64-linux-gnu/
 -rwxr-xr-x root/root  10318664 2022-11-09 04:47 ./usr/lib/x86_64-linux-gnu/libsommelier_drive_client.so
 -rwxr-xr-x root/root  12711832 2022-11-09 06:32 ./usr/lib/x86_64-linux-gnu/libsommelier_libc.so
-```
 
-インストールを実行する
-
-```
-sudo dpkg -i sommelier-drive-glibc_1.1_amd64.deb
+$ sudo dpkg -i sommelier-drive-glibc_1.1_amd64.deb
 ```
 
 ### ユーザーの登録
@@ -329,6 +327,7 @@ total 0
 drw------- 0 alice alice  0 Jan  1  1970 dir1
 -rw------- 0 alice alice  0 Jan  1  1970 file1
 -rw------- 0 alice alice 21 Jan  1  1970 file2
+-rw------- 0 alice alice 21 Jan  1  1970 file3
 ```
 
 ドライブの設計の都合でstatの返り値に空白が多いため、情報の表示がはいい加減であるが、エントリの表示ができていることは確認できる。
