@@ -1,0 +1,1627 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://sommelier-db.github.io/Sommelier-docs/glibc/blog-ja/">
+      
+      <link rel="icon" href="../../assets/figs/logo.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-8.5.9">
+    
+    
+      
+        <title>glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese] - Sommelier DB Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.20d9efc8.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.08040f6c.min.css">
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-XCVVGGTC1G"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-XCVVGGTC1G",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-XCVVGGTC1G",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#glibc" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Sommelier DB Docs" class="md-header__button md-logo" aria-label="Sommelier DB Docs" data-md-component="logo">
+      
+  <img src="../../assets/figs/logo.png" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Sommelier DB Docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="red" data-md-color-accent="red"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3Z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Sommelier-db/Sommelier-docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../.." class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../db/intro/" class="md-tabs__link">
+        Sommelier DB
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../drive/intro/" class="md-tabs__link">
+        Sommelier Drive
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../blog/pkse/" class="md-tabs__link md-tabs__link--active">
+        Developer's Blog
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Sommelier DB Docs" class="md-nav__button md-logo" aria-label="Sommelier DB Docs" data-md-component="logo">
+      
+  <img src="../../assets/figs/logo.png" alt="logo">
+
+    </a>
+    Sommelier DB Docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Sommelier-db/Sommelier-docs/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Sommelier DB
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sommelier DB" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Sommelier DB
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../db/intro/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../db/get_started/" class="md-nav__link">
+        Get Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../db/how_it_works/" class="md-nav__link">
+        How it works
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../db/apis/" class="md-nav__link">
+        APIs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Sommelier Drive
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Sommelier Drive" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Sommelier Drive
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/intro/" class="md-nav__link">
+        Introduction
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/get_started/" class="md-nav__link">
+        Get Started
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_3" type="checkbox" id="__nav_3_3" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_3">
+          How it works
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="How it works" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_3">
+          <span class="md-nav__icon md-icon"></span>
+          How it works
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/how_it_works/concepts/" class="md-nav__link">
+        New Concepts
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/how_it_works/server_spec/" class="md-nav__link">
+        Server Specification
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/how_it_works/client_spec/" class="md-nav__link">
+        Client Specification
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3_4" type="checkbox" id="__nav_3_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3_4">
+          APIs
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="APIs" data-md-level="2">
+        <label class="md-nav__title" for="__nav_3_4">
+          <span class="md-nav__icon md-icon"></span>
+          APIs
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/apis/server_apis/" class="md-nav__link">
+        Server REST APIs
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../drive/apis/client_apis/" class="md-nav__link">
+        Client APIs
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Developer's Blog
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Developer's Blog" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Developer's Blog
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/pkse/" class="md-nav__link">
+        How we implemented expressive search criteria with minimum effort.
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../blog/db_speed_up/" class="md-nav__link">
+        Speed up multiple INSERT queries in Sommelier Drive Server, using TRANSACTION
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../blog/" class="md-nav__link">
+        A user level file system for Sommelier Drive
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        glibcの書き換えによるドライブ上のファイルへのアクセス [Japanese]
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#author" class="md-nav__link">
+    Author: 西井遥紀
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    はじめに
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    挙動の変更方法について
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    具体的な設計の方針
+  </a>
+  
+    <nav class="md-nav" aria-label="具体的な設計の方針">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openopenat" class="md-nav__link">
+    open/openat
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closefsync" class="md-nav__link">
+    close/fsync
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fstatat" class="md-nav__link">
+    fstatat
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opendirfdopendirreaddirclosedir" class="md-nav__link">
+    opendir/fdopendir/readdir/closedir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdir" class="md-nav__link">
+    mkdir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init_drivefini_drive" class="md-nav__link">
+    init_drive/fini_drive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    ビルドの方法と問題点
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    挙動のテスト
+  </a>
+  
+    <nav class="md-nav" aria-label="挙動のテスト">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    環境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    インストール
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    ユーザーの登録
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    コマンドの実行
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    終わりに
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    参考にした記事、サイト
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#author" class="md-nav__link">
+    Author: 西井遥紀
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_1" class="md-nav__link">
+    はじめに
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    目的
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    挙動の変更方法について
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    具体的な設計の方針
+  </a>
+  
+    <nav class="md-nav" aria-label="具体的な設計の方針">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#openopenat" class="md-nav__link">
+    open/openat
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#closefsync" class="md-nav__link">
+    close/fsync
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fstatat" class="md-nav__link">
+    fstatat
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#opendirfdopendirreaddirclosedir" class="md-nav__link">
+    opendir/fdopendir/readdir/closedir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mkdir" class="md-nav__link">
+    mkdir
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#init_drivefini_drive" class="md-nav__link">
+    init_drive/fini_drive
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    ビルドの方法と問題点
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    挙動のテスト
+  </a>
+  
+    <nav class="md-nav" aria-label="挙動のテスト">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    環境
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    インストール
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    ユーザーの登録
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    コマンドの実行
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    終わりに
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    参考にした記事、サイト
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  <a href="https://github.com/Sommelier-db/Sommelier-docs/edit/main/docs/glibc/blog-ja.md" title="Edit this page" class="md-content__button md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+  </a>
+
+
+<h1 id="glibc">glibcの書き換えによるドライブ上のファイルへのアクセス</h1>
+<h4 id="author">Author: 西井遥紀</h4>
+<h2 id="_1">はじめに</h2>
+<p>ここではSommelier Driveが提供するクライアント側のAPIを利用して、Linuxマシン上で既存のコマンドを置き換えることなく通常のファイルシステムと同様にドライブ上のファイルやディレクトリを扱うという試みについて述べる。</p>
+<p>Sommelier Driveが提供するドライブを操作するAPIを利用する実装なので、厳密にはSommelier Driveとは別物だが実装の一貫として作成したので、ここに記載させていただく。</p>
+<h2 id="_2">目的</h2>
+<p>リモートにあるドライブを通常のファイルシステム同様に扱うという主旨で、今回はシンプルにターミナル上で扱うlsやcatやtouchといったコマンドをリモートのファイルやディレクトリに対しても行えるようにすることを目指した。NFSのようなネットワーク越しのファイルシステムをシステムコールを一つ一つ定義することで新しいファイルシステムを作って、ローカルのファイルシステムにマウントして使えるようにするのが通常だが、実験の時間の都合上、カーネルレベルでの実装はかなり厳しい。そこで、比較的着手しやすいglibcの書き換えによるユーザーレベルでの疑似ファイルシステムを実現を試みた。</p>
+<p>なぜglibcかというと、glibcの標準ライブラリlibc.soや、動的リンカld-linux.soというのはreadelfやlddで調べるとわかるように大抵のプログラムやライブラリからリンクされて使用されるからである。これはC言語で書かれたプログラムに限った話ではなく、例えば今回メンバーが作成したRustで書かれたライブラリを調べると、libc.so含めglibcの標準ライブラリが複数リンクされていることがわかる。
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span>
+<span class="normal">9</span></pre></div></td><td class="code"><div><pre><span></span><code>$ readelf -d librust_searchable_pke.so
+
+Dynamic section at offset 0xf8058 contains <span class="m">29</span> entries:
+ タグ        タイプ                       名前/値
+ 0x0000000000000001 <span class="o">(</span>NEEDED<span class="o">)</span>             共有ライブラリ: <span class="o">[</span>libgcc_s.so.1<span class="o">]</span>
+ 0x0000000000000001 <span class="o">(</span>NEEDED<span class="o">)</span>             共有ライブラリ: <span class="o">[</span>libm.so.6<span class="o">]</span>
+ 0x0000000000000001 <span class="o">(</span>NEEDED<span class="o">)</span>             共有ライブラリ: <span class="o">[</span>libc.so.6<span class="o">]</span>
+ 0x0000000000000001 <span class="o">(</span>NEEDED<span class="o">)</span>             共有ライブラリ: <span class="o">[</span>ld-linux-x86-64.so.2<span class="o">]</span>
+ ~~~~~~~~~~~
+</code></pre></div></td></tr></table></div>
+実際にltraceを使用したり、gdbでブレークポイントを貼るなどして調べると、ファイルの操作にはlibc.soのopen/close/read/writeといった関数が呼ばれ、ヒープからメモリの割り当てと解放には最終的にmalloc/free関数が呼ばれる。他にもPython,Rubyといったインタプリタ言語もCで書かれていることから同様にlibcの関数を使用している。</p>
+<p>つまりlibcの挙動そのものを変えればプログラムの挙動を変えることができると考え、ファイルシステムを自作するよりは手をつけやすいと感じ、このような試みに至った。しかしアセンブリで書かれたプログラムやGoなど独自の標準ライブラリを実装している言語で書かれたプログラムなどにはこの手法は使えない。</p>
+<h2 id="_3">挙動の変更方法について</h2>
+<p>glibcに変更を加えて独自のlibc.soを作成しても、既存の実行ファイルのリンク先を変更するには、再度リンクするかシステム内のlibc.soを置き換える必要がある。しかし、ソースコードが必ずしも存在するとは限らないし、システムにはなるべく変更を加えたくない。そこで関数のフックという手法を用いることにした。今回使用したのは <strong>LD_PRELOAD</strong> という環境変数で、共有ライブラリを指定すると、実行開始時に動的リンカが指定したライブラリを実行ファイルで指定されたライブラリより先にメモリにロードするというものである。命令の実行時に共有ライブラリの関数が初めて呼ばれたときに動的リンカに処理が移り、関数を探索してアドレスを解決するという流れがあるが、その時の関数の探索の順番をこのLD_PRELOADにライブラリを指定することで、プログラムにリンクされているライブラリより前に持ってくることができる。つまりLD_PRELOADに本来呼ばれるはずの共有ライブラリの関数を実装したライブラリを指定すると、関数の処理を横取りできることになる(関数を <strong>フック</strong> するという)。実際にLD_PRELOADはこの関数のフックの用途や、プログラム開始時と終了時に特定の処理をさせる用途で用いることができる。本実装ではこの手法を用いて既存のコマンドを書き換えずにlibc.soのファイルを扱う関数の挙動を変更した。</p>
+<p>ただしlibc.so内の関数を新たに定義して作成したライブラリをpreloadするだけでは、その関数を呼び出すlibc.so内の関数をフックすることはできない。例えば、write関数を定義したライブラリをpreloadしても、libc.soのfwrite関数が実際に呼び出すのは自身のwrite関数であってフックしたwrite関数ではない。これは同じライブラリにある関数のアドレスは相対的なものなので、わざわざ動的リンカを呼ぶことはないからである。ただファイルをオープンする処理をフックするために、creatやfopenといったすべての関数の処理を一つ一つ定義するのは労力を要するうえ見逃す可能性もある。そこで今回とった方針はglibc全体のソースを持ち出して、フックしたい関数が最終的に行き着く関数(例えばfopenに対してopen)のみを変更してpreloadするライブラリを作成するというもので、かなり無駄があるがlibc.soの関数はすべて揃うのでフックをしそこなう心配はなくなる。</p>
+<h2 id="_4">具体的な設計の方針</h2>
+<p>基本的にはファイルシステムを扱うシステムコールを呼び出す関数(正式ではないがここではシステムコール関数という。実際にソース内ではこれらの関数はマクロを用いてシステムコールを呼び出す)を書き換えればいいことになる。Linuxではこれらの関数はglibcソースコード内の<code>sysdeps/unix/sysv/linux/</code> 以下にまとまっている。</p>
+<p>実際にどの関数をフックする必要があるかは、簡単なコマンドをltraceやstraceでトレースしながら判定する。例えば以下は一つのファイルに対するcatをltraceした結果である。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ltrace cat file 
+<span class="c1">################ 必要な部分のみ抜粋</span>
+open<span class="o">(</span><span class="s2">&quot;file&quot;</span>, <span class="m">00</span>, <span class="m">037777400000</span><span class="o">)</span> <span class="o">=</span> open<span class="o">(</span><span class="s2">&quot;file&quot;</span>, O_RDONLY<span class="o">)</span>        <span class="o">=</span> <span class="m">3</span>
+fstat<span class="o">(</span><span class="m">3</span>, 0x7ffd1d8874b0<span class="o">)</span>                                       <span class="o">=</span> <span class="m">0</span>
+posix_fadvise<span class="o">(</span><span class="m">3</span>, <span class="m">0</span>, <span class="m">0</span>, <span class="m">2</span><span class="o">)</span>                                      <span class="o">=</span> <span class="m">0</span>
+aligned_alloc<span class="o">(</span><span class="m">4096</span>, 0x20000, <span class="m">0</span>, 0x7f44742fe47a<span class="o">)</span>                <span class="o">=</span> 0x7f4474462000
+read<span class="o">(</span><span class="m">3</span>, <span class="s2">&quot;this is a source file&quot;</span>, <span class="m">131072</span><span class="o">)</span>                       <span class="o">=</span> <span class="m">21</span>
+write<span class="o">(</span><span class="m">1</span>, <span class="s2">&quot;this is a source file&quot;</span>, 21this is a <span class="nb">source</span> file<span class="o">)</span>     <span class="o">=</span> <span class="m">21</span>
+read<span class="o">(</span><span class="m">3</span>, <span class="s2">&quot;&quot;</span>, <span class="m">131072</span><span class="o">)</span>                                            <span class="o">=</span> <span class="m">0</span>
+free<span class="o">(</span>0x7f4474462000<span class="o">)</span>                                           <span class="o">=</span> &lt;void&gt;
+close<span class="o">(</span><span class="m">3</span><span class="o">)</span>                                                       <span class="o">=</span> <span class="m">0</span>
+<span class="c1">################</span>
+</code></pre></div></td></tr></table></div>
+<p>まずfileをread onlyでopenし、返って来たファイル識別子に対して、fstat,readを実行して、最後にcloseする。この場合、リモートのファイルをread権限でopenする際はファイルの内容をDriveのAPIを利用してリモートから取得してローカルのファイルシステムに移しそのファイル識別子を返せば良い。その後のreadはこのローカルのファイルに対して行うので、フックの必要はない。
+他の例として、cpのltraceの結果を示す。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span></pre></div></td><td class="code"><div><pre><span></span><code>$ ltrace cp file dup
+<span class="c1">#################### 必要な部分のみ抜粋</span>
+open<span class="o">(</span><span class="s2">&quot;dup&quot;</span>, O_RDONLY<span class="p">|</span>O_PATH<span class="p">|</span>O_DIRECTORY, <span class="m">027516111125</span><span class="o">)</span>      <span class="o">=</span> -1
+__errno_location<span class="o">()</span>                                          <span class="o">=</span> 0x7f8fb847f698
+fstatat<span class="o">(</span>AT_FDCWD, <span class="s2">&quot;file&quot;</span>, 0x7fffbd387960<span class="o">)</span>                   <span class="o">=</span> <span class="m">0</span>
+open<span class="o">(</span><span class="s2">&quot;file&quot;</span>, <span class="m">00</span>, <span class="m">00</span><span class="o">)</span>                                        <span class="o">=</span> <span class="m">3</span>
+fstat<span class="o">(</span><span class="m">3</span>, 0x7fffbd387b10<span class="o">)</span>                                    <span class="o">=</span> <span class="m">0</span>
+openat<span class="o">(</span>AT_FDCWD, <span class="s2">&quot;dup&quot;</span>, O_WRONLY<span class="p">|</span>O_CREAT<span class="p">|</span>O_EXCL, <span class="m">0644</span><span class="o">)</span>      <span class="o">=</span> <span class="m">4</span>
+__errno_location<span class="o">()</span>                                          <span class="o">=</span> 0x7f8fb847f698
+ioctl<span class="o">(</span><span class="m">4</span>, <span class="m">1074041865</span>, 0x3<span class="o">)</span>                                   <span class="o">=</span> -1
+fstat<span class="o">(</span><span class="m">4</span>, 0x7fffbd387a80<span class="o">)</span>                                    <span class="o">=</span> <span class="m">0</span>
+posix_fadvise<span class="o">(</span><span class="m">3</span>, <span class="m">0</span>, <span class="m">0</span>, <span class="m">2</span><span class="o">)</span>                                   <span class="o">=</span> <span class="m">0</span>
+copy_file_range<span class="o">(</span><span class="m">3</span>, <span class="m">0</span>, <span class="m">4</span>, <span class="m">0</span><span class="o">)</span>                                 <span class="o">=</span> <span class="m">21</span>
+copy_file_range<span class="o">(</span><span class="m">3</span>, <span class="m">0</span>, <span class="m">4</span>, <span class="m">0</span><span class="o">)</span>                                 <span class="o">=</span> <span class="m">0</span>
+close<span class="o">(</span><span class="m">4</span><span class="o">)</span>                                                    <span class="o">=</span> <span class="m">0</span>
+close<span class="o">(</span><span class="m">3</span><span class="o">)</span>                                                    <span class="o">=</span> <span class="m">0</span>
+<span class="c1">####################</span>
+</code></pre></div></td></tr></table></div>
+<p>まずコピー先のパスがファイルかディレクトリか存在するかどうかをopenで判定し、ファイルである場合はwrite権限でそのファイルを開く。その後内容をコピーしてcloseする。この場合、write権限でドライブ上のパスを指定してopenした場合、ファイルがドライブ上になければ作成し、ローカルのファイルとして開く。更にこのファイルをcloseするときは、変更をドライブに保存するように変更する必要がある。</p>
+<p>今回Sommelier Driveから提供されるAPIは以下である。</p>
+<ul>
+<li>
+<p>addFile
+パス名を指定してファイルを作成する</p>
+</li>
+<li>
+<p>addDirectory
+パス名を指定してディレクトリを作成する</p>
+</li>
+<li>
+<p>getChildrenPathes
+ディレクトリを指定して、エントリ一覧を取得する</p>
+</li>
+<li>
+<p>isExistFilepath
+パスの有無を取得する</p>
+</li>
+<li>
+<p>modifyFile
+ファイルの内容を変更する</p>
+</li>
+<li>
+<p>openFilepath
+パスを開きパーミッションやファイルの内容を取得する。</p>
+</li>
+<li>
+<p>searchDescendantPathes
+ディレクトリを指定して子孫の一覧を取得する</p>
+</li>
+</ul>
+<p>これらのAPIを用いて実装できる範囲で、glibcの関数をフックする。ただしこれらのAPIは現段階ではかなり時間がかかるので、呼び出しを極力減らす実装にする必要があった。</p>
+<p>以下に変更を加えた<code>sysdeps/unix/sysv/linux/</code>の関数を示す。</p>
+<ul>
+<li>
+<h3 id="openopenat">open/openat</h3>
+<p>フックの大部分を構成するシステムコール関数。上に述べたとおり、引数であるファイルのパスとフラグを判定して、パス名がドライブのものであった場合は、フラグの組み合わせに応じてドライブ上のパスに対して特定の処理を行うように設計した。またopenatは第一引数にディレクトリの識別子を指定するが、これがドライブ上のものである場合も、特別な処理が必要になる。今回fopenやcreatなどで使用されるO_RDONLY,　O_WRONLY,　O_RDWR, O_CREAT, O_EXCL, O_TRUNC, O_APPEND, O_DIRECTORYの8つのフラグに対応した。</p>
+</li>
+<li>
+<h3 id="closefsync">close/fsync</h3>
+<p>O_WRONLYかO_RDWRを指定してopenしたドライブ上のファイルはこれらの関数が呼ばれる際にローカルで編集したファイルの内容をドライブに保存する必要がある。
+fsyncはファイルの変更をディスクに反映するシステムコール関数である。close関数に加えてこの関数を変更したのは、nanoコマンドでリモートのプログラムを編集できるようにするためである。このコマンドの挙動をltraceで調べたところ、Ctrl-Sが押されるたびにfsync関数を呼び出すが、終了時にclose関数を呼び出さなかった。そのため、ドライブ上のファイルに対してfsyncが呼ばれるたびに変更を反映する処理が必要になった。</p>
+</li>
+<li>
+<h3 id="fstatat">fstatat</h3>
+<p>ファイルやディレクトリの情報を取得する関数で、本環境の実装では内部でnewfstatatというシステムコールを呼び出す。stat/fstat/lstat/statxといった関数も、フラグを指定してこの関数を呼び出すので、変更はこの関数のみでよい(ただし、環境によってはこれらの関数は同名のシステムコールを呼び出すのであくまで本環境のみでの実装である)。現ドライブの実装ではファイルが保持する情報の種類はさほど多くないので、パーミッションとファイルサイズのみ取得し、他の情報は0で埋める設計にした。</p>
+</li>
+<li>
+<h3 id="opendirfdopendirreaddirclosedir">opendir/fdopendir/readdir/closedir</h3>
+<p>ディレクトリのエントリ一覧を返す一連のライブラリ関数であり、ls, findといったコマンドやシェルのパス名補完機能などで用いられている。それぞれopen/getdent/closeといったシステムコール関数を呼び出すが、エントリ一覧を取得するためにこれらが直接呼ばれることはめったにないので、上記の関数のみを変更した。</p>
+</li>
+<li>
+<h3 id="mkdir">mkdir</h3>
+<p>ディレクトリを作成する関数で、リモートのパスが指定されたときに対応するAPIを呼び出すように変更すれば良い。しかしCのファイルが見当たらず、ビルドをたどったところスクリプトでアセンブリを生成しコンパイルしているようだった。一部のシステムコール関数は同様の方法でコンパイルされているようだったが、それらの関数を指定する部分が見当たらなかったので、C言語で記述して強引であるがもとのシンボルを上書きすることで対応した。</p>
+</li>
+<li>
+<h3 id="init_drivefini_drive">init_drive/fini_drive</h3>
+<p>ドライブ接続に必要なサーバとユーザの情報を環境変数から取得する本実装独自の関数である。それぞれ以下のように<code>__attribute__((constructor))</code>と<code>__attribute__((destructor))</code>で宣言している。</p>
+</li>
+</ul>
+<p><div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">__attribute__</span><span class="p">((</span><span class="n">constructor</span><span class="p">))</span><span class="w"> </span><span class="n">init_drive</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+<span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">__attribute__</span><span class="p">((</span><span class="n">destructor</span><span class="p">))</span><span class="w"> </span><span class="n">fini_drive</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span><span class="w"></span>
+</code></pre></div></td></tr></table></div>
+この属性を指定して宣言した関数は、ライブラリがメモリにロードされる際とプログラムが終了する際にそれぞれ自動的に呼び出される。Sommelier Drive のAPIを呼び出すたびに環境変数から情報を取得して検証するのは冗長になるので、ロード時のみ読み込んでライブラリのデータを保持する領域に保存することにした。また<code>init_drive</code>関数内でAPIのライブラリを<code>dlopen</code>でロードする。通常は外部のライブラリとのリンクは、ライブラリ生成時に行うものだが、glibcはビルドに独自実装以外のライブラリを必要としない設計となっていてRustで作成したライブラリとリンクすることができなかったため、代替策として実行時に動的にリンクする手法をとった。</p>
+<h2 id="_5">ビルドの方法と問題点</h2>
+<p>深刻な問題だがmakeによるビルドが失敗する。本来のビルドは単純にビルドディレクトリに移動して<code>&lt;source path&gt;/configure</code>と<code>make</code> で済むのはずだが、実装に変更を加えたためにこのビルド方法では以下のようなエラーにより止まってしまう。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code>for symbol in __GI___pthread_disable_asynccancel __GI___pthread_enable_asynccancel __pthread_disable_asynccancel __pthread_enable_asynccancel calloc free malloc realloc  __stack_chk_fail __stack_chk_fail_local; do \
+        echo &quot;.globl $symbol&quot;; \
+        echo &quot;$symbol:&quot;; \
+done | gcc -o /home/sitianos/Project/Drive/build/elf/librtld.mapT.o -g -Werror=undef -Wa,--noexecstack  -c -x assembler -
+gcc   -nostdlib -nostartfiles -r -o /home/sitianos/Project/Drive/build/elf/librtld.map.o /home/sitianos/Project/Drive/build/elf/librtld.mapT.o &#39;-Wl,-(&#39; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os /home/sitianos/Project/Drive/build/libc_pic.a -lgcc &#39;-Wl,-)&#39; -Wl,-Map,/home/sitianos/Project/Drive/build/elf/librtld.mapT
+/usr/bin/ld: /home/sitianos/Project/Drive/build/libc_pic.a(getcwd.os): in function `__GI___getcwd&#39;:
+/home/sitianos/Project/Drive/glibc-drive/io/../sysdeps/unix/sysv/linux/getcwd.c:49: multiple definition of `__getcwd&#39;; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/../sysdeps/unix/sysv/linux/getcwd.c:49: first defined here
+/usr/bin/ld: /home/sitianos/Project/Drive/build/libc_pic.a(dl-error.os): in function `__GI__dl_signal_exception&#39;:
+/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:91: multiple definition of `_dl_signal_exception&#39;; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:91: first defined here
+/usr/bin/ld: /home/sitianos/Project/Drive/build/libc_pic.a(dl-error.os): in function `__GI__dl_signal_error&#39;:
+/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:109: multiple definition of `_dl_signal_error&#39;; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:109: first defined here
+/usr/bin/ld: /home/sitianos/Project/Drive/build/libc_pic.a(dl-error.os): in function `__GI__dl_catch_exception&#39;:
+/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:175: multiple definition of `_dl_catch_exception&#39;; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:175: first defined here
+/usr/bin/ld: /home/sitianos/Project/Drive/build/libc_pic.a(dl-error.os): in function `__GI__dl_catch_error&#39;:
+/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:225: multiple definition of `_dl_catch_error&#39;; /home/sitianos/Project/Drive/build/elf/dl-allobjs.os:/home/sitianos/Project/Drive/glibc-drive/elf/dl-error-skeleton.c:225: first defined here
+collect2: error: ld returned 1 exit status
+</code></pre></div></td></tr></table></div>
+<p>表示にあるように関数の多重定義によるエラーであるが、指摘されている関数は実装を変更したファイル内では用いてない。実際に<code>libc_pic.a</code>と<code>dl-allobjs.os</code>内のシンボルを確認したところ確かに同じ関数が定義されていたが、ファイルに変更を加えることでそのような状況になる理由がわからなかった。<code>dlopen</code>を使用したことが原因と考えてこの記述を消したり、同じ定義を指してのエラーであることから<code>-fcommon</code>オプションを加えたりなど試みたが解消しなかった。上記のレシピは動的リンカld-linux.soを作成する一環のものであるが、目的のlibc.soを作成するにはld-linux.soへのリンクが必要であるため、これ以降ビルドは進まない。ld-linux.soを作成する一連のビルド関連ファイルを読んでみたものの原因の特定には至らなかった。現段階ではかなり強引であるものの以下の方法でビルドできる。</p>
+<ol>
+<li><code>sysdeps/unix/sysv/linux/drive-common.h</code>の<code>DRIVE_EXT</code>マクロを0にセットして、<code>configure</code>と<code>make</code>でビルドする。</li>
+<li><code>sysdeps/unix/sysv/linux/drive-common.h</code>の<code>DRIVE_EXT</code>マクロを1にセットして、<code>make -k</code>を実行する。</li>
+</ol>
+<p>1により変更を含めない通常通りのビルドを実行してlibc.soに必要なファイルが生成する。2ではld.so作成上のエラーを無視して、変更を加えた関数を含めたlibc.soを作成する。依存上で必要なファイルは1で作成されているので、ld.soの作成でエラーは出力されるものの、目的のlibc.soは生成される。
+このように強引なビルド方法なので、ビルド後のバイナリとしてDebianパッケージを作成した。</p>
+<p>2つ目の問題として、libc.soをLD_PRELOADに指定してコマンドを実行した際に、Segmentation Faultで落ちてしまうというものがあった。gdbで調べたところ、共有ライブラリをロードする際にアクセス違反が生じていた。同様のエラーが発生した例を探したところ、<a href="https://qiita.com/kusano_k/items/ab35d5982011eb0f742e#%E8%BF%BD%E8%A8%98" title="libc.soを差し替えてプログラムを動かす（のは無理そう）">CTFの記事</a>が見つかり、これによるとlibc.soはld-linux.soの構造体を参照しているが、このメンバの配置がバージョンごとに異なるため、実際に動いているld-linux.soとバージョンを合わせる必要があるという。そのため、glibcのバージョンを実機のものに揃えて再ビルドして、preloadしたところ問題なく関数のフックが成功した。この制約は非常に問題なので、フックに必要な関数の依存を調べ部分的にリンクして、動的リンカを必要としないライブラリを制作しようとしたが、ビルド関連の設定が複雑であったので、ひとまずglibcバージョンを揃えたVMなどの環境で動かすことで対応した。</p>
+<h2 id="_6">挙動のテスト</h2>
+<p><strong>※ テストは実機で行えるが思わぬバグを生じる可能性があるため以下の環境を構築したVM上で行う。</strong></p>
+<h3 id="_7">環境</h3>
+<ul>
+<li>OS: Linux (Debian系)</li>
+<li>Arch: amd64</li>
+<li>Libraries: <ul>
+<li>libc6 (= 2.35) (上に述べた理由から現状ではこのバージョンのみ)</li>
+<li>libssl3 (&gt;= 3.0.0)</li>
+</ul>
+</li>
+</ul>
+<h3 id="_8">インストール</h3>
+<p>システムのglibcのバージョンを確認する</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span></pre></div></td><td class="code"><div><pre><span></span><code>$ /usr/lib/x86_64-linux-gnu/libc.so.6
+GNU C Library <span class="o">(</span>Debian GLIBC <span class="m">2</span>.35-3<span class="o">)</span> stable release version <span class="m">2</span>.35.
+Copyright <span class="o">(</span>C<span class="o">)</span> <span class="m">2022</span> Free Software Foundation, Inc.
+This is free software<span class="p">;</span> see the <span class="nb">source</span> <span class="k">for</span> copying conditions.
+There is NO warranty<span class="p">;</span> not even <span class="k">for</span> MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.
+Compiled by GNU CC version <span class="m">11</span>.3.0.
+libc ABIs: UNIQUE IFUNC ABSOLUTE
+For bug reporting instructions, please see:
+&lt;http://www.debian.org/Bugs/&gt;.
+</code></pre></div></td></tr></table></div>
+<p>Debianパッケージのダウンロードとインストールを実行する</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code>$ curl -O https://github.com/Sommelier-db/sommelier-drive-glibc/raw/drive/sommelier-drive/sommelier-drive-glibc_1.1_amd64.deb
+
+$ dpkg-deb -c sommelier-drive-glibc_1.1_amd64.deb
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:38 ./
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:39 ./usr/
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">06</span>:42 ./usr/bin/
+-rwxr-xr-x root/root     <span class="m">16264</span> <span class="m">2022</span>-11-09 <span class="m">06</span>:30 ./usr/bin/sommelier-register
+-rwxr--r-- root/root      <span class="m">1138</span> <span class="m">2022</span>-11-09 <span class="m">06</span>:42 ./usr/bin/sommelier-run
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:47 ./usr/include/
+-rw-r--r-- root/root      <span class="m">2372</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:47 ./usr/include/sommelier_drive_client.h
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:38 ./usr/lib/
+drwxr-xr-x root/root         <span class="m">0</span> <span class="m">2022</span>-11-09 <span class="m">06</span>:42 ./usr/lib/x86_64-linux-gnu/
+-rwxr-xr-x root/root  <span class="m">10318664</span> <span class="m">2022</span>-11-09 <span class="m">04</span>:47 ./usr/lib/x86_64-linux-gnu/libsommelier_drive_client.so
+-rwxr-xr-x root/root  <span class="m">12711832</span> <span class="m">2022</span>-11-09 <span class="m">06</span>:32 ./usr/lib/x86_64-linux-gnu/libsommelier_libc.so
+
+$ sudo dpkg -i sommelier-drive-glibc_1.1_amd64.deb
+</code></pre></div></td></tr></table></div>
+<h3 id="_9">ユーザーの登録</h3>
+<p>立ち上げたドライブのサーバに対して、urlとリージョン名とホームディレクトリのパスを指定してユーザを登録すると、以下のようなファイルが生成される。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span>
+<span class="normal">30</span>
+<span class="normal">31</span>
+<span class="normal">32</span>
+<span class="normal">33</span>
+<span class="normal">34</span>
+<span class="normal">35</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-register <span class="s2">&quot;http://localhost:8000/api&quot;</span> <span class="s2">&quot;region&quot;</span> <span class="s2">&quot;/alice&quot;</span>
+successfully registered. user id is <span class="m">1</span>
+configuration is saved <span class="k">in</span> drive_envs
+
+$ cat drive_envs
+<span class="c1"># key to encrypt data</span>
+print_data_sk <span class="o">()</span> <span class="o">{</span>
+cat <span class="s">&lt;&lt; END_OF_FILE</span>
+<span class="s">-----BEGIN PRIVATE KEY-----</span>
+<span class="s">MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDEvumJhkNvwPzx</span>
+<span class="s">1bB52SLrP6wS+DL+l+umOJ0rIsuuwWcbRS7cRejWwN7GYC0og6r0or</span>
+<span class="s">~~~~~~~~~~~~~~~~~~~~~~~~</span>
+<span class="s">j5WFyup4lgD0uwH9TLXsZj5s13fYs6HhyOBhJyDMbNvkz46Bi0U2kDQvAmiSAmCy</span>
+<span class="s">ixu5XBCophbUe+H8uevbNQ==</span>
+<span class="s">-----END PRIVATE KEY-----</span>
+<span class="s">END_OF_FILE</span>
+<span class="o">}</span>
+
+<span class="c1"># key to use for searchable encryption</span>
+print_keyword_sk <span class="o">()</span> <span class="o">{</span>
+cat <span class="s">&lt;&lt; END_OF_FILE</span>
+<span class="s">{&quot;alphas&quot;:[[8781683650687187445,1371472541923046913,15906317983419354644,7861644468431804003],</span>
+<span class="s">~~~~~~~~~~~~~~~~~~~~</span>
+<span class="s">,169,67,239,123,187,54,92,20,230,126,253,242,134,179,34,38,135,162,88,13,158,42,195,234,189,122,158,196,206]}</span>
+<span class="s">END_OF_FILE</span>
+<span class="o">}</span>
+
+<span class="c1"># client user id</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_USER_ID</span><span class="o">=</span><span class="m">1</span>
+<span class="c1"># server to connect to</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_BASE_URL</span><span class="o">=</span>http://localhost:8000/api
+<span class="c1"># server region</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_REGION_NAME</span><span class="o">=</span>region
+<span class="c1"># remote home directory</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_HOME_DIR</span><span class="o">=</span>/alice
+</code></pre></div></td></tr></table></div>
+<p>このファイルにドライブへの接続に必要なサーバの情報と、2種類の秘密鍵を含んだクライアントの情報を環境変数に設定する記述がなされている。</p>
+<h3 id="_10">コマンドの実行</h3>
+<p>コマンドを実行するラッパーとなる<code>sommelier-run</code>は以下のようなスクリプトである。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span>
+<span class="normal">21</span>
+<span class="normal">22</span>
+<span class="normal">23</span>
+<span class="normal">24</span>
+<span class="normal">25</span>
+<span class="normal">26</span>
+<span class="normal">27</span>
+<span class="normal">28</span>
+<span class="normal">29</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="ch">#!/bin/sh</span>
+<span class="c1"># directory on which files on the remote drive are put</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_BASE_DIR</span><span class="o">=</span>/tmp/drive
+
+rm -rf <span class="nv">$SOMMELIER_DRIVE_BASE_DIR</span>
+mkdir -p <span class="nv">$SOMMELIER_DRIVE_BASE_DIR</span>
+chmod <span class="m">700</span> <span class="nv">$SOMMELIER_DRIVE_BASE_DIR</span>
+
+<span class="c1"># whether to trace library calls</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_TRACE</span><span class="o">=</span><span class="m">0</span>
+
+<span class="c1"># load server info and user info</span>
+. <span class="nv">$PWD</span>/drive_envs
+<span class="nv">SOMMELIER_DRIVE_DATA_SK</span><span class="o">=</span><span class="k">$(</span>mktemp -p <span class="nv">$SOMMELIER_DRIVE_BASE_DIR</span><span class="k">)</span>
+print_data_sk &gt; <span class="nv">$SOMMELIER_DRIVE_DATA_SK</span>
+<span class="nb">export</span> SOMMELIER_DRIVE_DATA_SK
+
+<span class="nv">SOMMELIER_DRIVE_KEYWORD_SK</span><span class="o">=</span><span class="k">$(</span>mktemp -p <span class="nv">$SOMMELIER_DRIVE_BASE_DIR</span><span class="k">)</span>
+print_keyword_sk &gt; <span class="nv">$SOMMELIER_DRIVE_KEYWORD_SK</span>
+<span class="nb">export</span> SOMMELIER_DRIVE_KEYWORD_SK
+
+<span class="c1"># library path of Sommelier Drive API</span>
+<span class="nb">export</span> <span class="nv">SOMMELIER_DRIVE_LIBRARY_PATH</span><span class="o">=</span>/usr/lib/x86_64-linux-gnu/libsommelier_drive_client.so
+
+<span class="c1"># library to preload for function hooking</span>
+<span class="nb">export</span> <span class="nv">LD_PRELOAD</span><span class="o">=</span>/usr/lib/x86_64-linux-gnu/libsommelier_libc.so
+
+<span class="c1"># execute privided command</span>
+<span class="nb">exec</span> <span class="nv">$@</span>
+</code></pre></div></td></tr></table></div>
+<p>これに示す通り、ユーザ登録時に作成した設定ファイルと、Sommelier DriveのAPIを保持するライブラリを環境変数に指定し、LD_PRELOADに作成した関数フックのためのlibcライブラリを指定して与えられたコマンドを実行する。
+このスクリプトを用いて、ファイルを扱うコマンドを以下のように実行してドライブ上のファイルを操作する。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run <span class="nb">command</span> <span class="o">[</span>args<span class="o">]</span>
+</code></pre></div></td></tr></table></div>
+<p>実際に動作する標準コマンドをいくつか紹介する。まずファイルとディレクトリを作成する。ドライブ上のパスは先頭に"sommelier:"をつけて指定する。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run touch sommelier:/alice/file1
+
+$ sommelier-run mkdir sommelier:/alice/dir1
+</code></pre></div></td></tr></table></div>
+<p>これで実際にドライブ上にファイルとディレクトリが作成された。cpコマンドにより、ローカル-リモート間、リモート-リモート間でファイルを複製できることも確認する。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span></pre></div></td><td class="code"><div><pre><span></span><code>$ <span class="nb">echo</span> <span class="s2">&quot;this is a local file&quot;</span> &gt; localfile
+
+$ sommelier-run cp localfile sommelier:/alice/file2
+
+$ sommelier-run cat sommelier:/alice/file2
+this is a <span class="nb">local</span> file
+
+$ sommelier-run cp sommelier:/alice/file2 sommelier:/alice/file3
+
+$ sommelier-run cat sommelier:/alice/file3
+this is a <span class="nb">local</span> file
+
+$ sommelier-run cp sommelier:/alice/file2 remotefile
+
+$ cat remotefile
+this is a <span class="nb">local</span> file
+</code></pre></div></td></tr></table></div>
+<p>次にlsコマンドによりリモートに作成したファイルとディレクトリを確認する。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run ls -l sommelier:/alice/
+total <span class="m">0</span>
+drw------- <span class="m">0</span> alice alice  <span class="m">0</span> Jan  <span class="m">1</span>  <span class="m">1970</span> dir1
+-rw------- <span class="m">0</span> alice alice  <span class="m">0</span> Jan  <span class="m">1</span>  <span class="m">1970</span> file1
+-rw------- <span class="m">0</span> alice alice <span class="m">21</span> Jan  <span class="m">1</span>  <span class="m">1970</span> file2
+-rw------- <span class="m">0</span> alice alice <span class="m">21</span> Jan  <span class="m">1</span>  <span class="m">1970</span> file3
+</code></pre></div></td></tr></table></div>
+<p>ドライブ設計の都合によりstatで取得するファイルの情報に空白が多いため情報の表示はいい加減だが、エントリと属性、ファイルサイズの表示ができていることは確認できる。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run nano sommelier:/alice/file3
+</code></pre></div></td></tr></table></div>
+<p>最後にnanoエディタを試す。</p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run nano sommelier:/alice/file3
+</code></pre></div></td></tr></table></div>
+<p>ファイルの編集は滞りなくできるものの、Ctrl-Sで変更を保存するのにはかなり時間を要する。
+<img width="80%" src="../../assets/figs/nano.png"></p>
+<div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">1</span>
+<span class="normal">2</span></pre></div></td><td class="code"><div><pre><span></span><code>$ sommelier-run cat sommelier:/alice/file3
+nano opened
+</code></pre></div></td></tr></table></div>
+<h2 id="_11">終わりに</h2>
+<p>今回、カーネルレベルで変更を加える代わりにシステムコールの挙動をLD_PRELOADという環境変数を用いてシステムコールを呼ぶ関数をフックするという手法で変更したが、この他にも関数のフックの手法はあるようだ。straceやgdbで使用されているptraceシステムコールを用いるものもあれば、この<a href="https://yasukata.hatenablog.com/entry/2021/10/14/145642">記事</a>で紹介されている高速にシステムコールフックを実現する興味深い手法も存在する。LD_PRELOADをフックの用途で用いるのは、ソケット通信のラッパーでよく目にする。例えば<a href="https://github.com/haad/proxychains">proxychains</a>というツールはLD_PRELOADにより通信の関数をフックしてsocks5サーバ経由にする。ファイルシステムに対する処理を書き換える試みは一般的でないようだが、<a href="https://packages.debian.org/ja/stretch/fakeroot">fakeroot</a>など関数フックにより類似のことを行うツールはあったため、今回挑戦するに至った。すでに述べたビルド上の問題に加え、乱雑な実装になり課題を残す結果となったものの、最低限の機能は実現できたため、取り組み自体には意義はあったものと感じている。本実装はSommelier Drive実装の延長としてAPIを利用する一つの方針として個人的に馴染みのあったglibcを変更するという案から実現したものである。機能の改善というより個人利用の開発に近いものとなったが、普段読むだけであったコードに手を加えることでオープンソースに触れるよい経験となった。</p>
+<h2 id="_12">参考にした記事、サイト</h2>
+<p>[1] <a href="https://qiita.com/kusano_k/items/ab35d5982011eb0f742e#%E8%BF%BD%E8%A8%98">libc.soを差し替えてプログラムを動かす（のは無理そう）</a></p>
+<p>[2] <a href="https://yasukata.hatenablog.com/entry/2021/10/14/145642">ptrace より 100 倍速いシステムコールフック作った</a></p>
+<p>[3] <a href="https://github.com/haad/proxychains">proxychains</a></p>
+<p>[4] <a href="https://packages.debian.org/ja/stretch/fakeroot">fakeroot</a></p>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="../blog/" class="md-footer__link md-footer__link--prev" aria-label="Previous: A user level file system for Sommelier Drive" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              A user level file system for Sommelier Drive
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tracking", "navigation.tabs"], "search": "../../assets/javascripts/workers/search.16e2a7d4.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d6c3db9e.min.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  </body>
+</html>
