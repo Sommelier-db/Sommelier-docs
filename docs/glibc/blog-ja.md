@@ -166,7 +166,9 @@ collect2: error: ld returned 1 exit status
 ### 環境
 - OS: Linux (Debian系)
 - Arch: amd64
-- libc: libc6 2.35 (上に述べた理由から現状ではこのバージョンのみ)
+- Libraries: 
+	- libc6 (= 2.35) (上に述べた理由から現状ではこのバージョンのみ)
+	- libssl3 (>= 3.0.0)
 
 ### インストール
 システムのglibcのバージョンを確認する
@@ -330,7 +332,7 @@ drw------- 0 alice alice  0 Jan  1  1970 dir1
 -rw------- 0 alice alice 21 Jan  1  1970 file3
 ```
 
-ドライブの設計の都合でstatの返り値に空白が多いため、情報の表示がはいい加減であるが、エントリの表示ができていることは確認できる。
+ドライブ設計の都合によりstatで取得するファイルの情報に空白が多いため情報の表示はいい加減だが、エントリと属性、ファイルサイズの表示ができていることは確認できる。
 
 ``` shell
 $ sommelier-run nano sommelier:/alice/file3
